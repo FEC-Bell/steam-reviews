@@ -43,9 +43,9 @@ const generateReviewData = () => {
    * 2. id_game must be between 1-100
    * 3. hours_at_review_time must not exceed hours_on_record
    * 4. purchase_type must be one of ('direct', 'key')
-   * 5. date_posted must be weight to be more recent
+   * 5. date_posted must be weighted to be more recent
    * 6. A user may only review a game at most 1 time
-   * 7. Each used reviews at least 1 game
+   * 7. Each user reviews at least 1 game
    */
 
   // Maps reviewData to id_game, ensuring there are REVIEWS_PER_GAME num of each game id

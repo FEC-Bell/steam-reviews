@@ -44,7 +44,7 @@ CREATE TABLE reviews (
   -- while scale indicates digits to the right of the decimal. I.E. #####.# format
   hours_on_record NUMERIC(5, 1),
   hours_at_review_time NUMERIC(5, 1) CHECK (hours_at_review_time <= hours_on_record),
-  -- Equivalent to MySQL SET (see type declaration on line 48)
+  -- Equivalent to MySQL SET (see type declaration on line 34)
   purchase_type p_type,
   date_posted DATE,
   received_free BOOLEAN,
