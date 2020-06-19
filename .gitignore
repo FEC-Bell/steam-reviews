@@ -1,3 +1,6 @@
+# Content images will be auto-uploaded to Cloud
+data-gen/img-processing/imgs/*.png
+
 # Logs
 logs
 *.log
