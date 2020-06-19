@@ -56,9 +56,9 @@ const generateReviewData = () => {
   // Rules: 1, 2, 6, 7
   for (let i = 0; i < reviewData.length; i += REVIEWS_PER_GAME) {
     let gameAndUserIdTuples = generateNUniqueIds(1, 750, REVIEWS_PER_GAME)
-      .map(userId => ({
+      .map(idUser => ({
         idGame: reviewData[i],
-        idUser: userId
+        idUser
       }));
     reviewData.splice(i, REVIEWS_PER_GAME, ...gameAndUserIdTuples);
   }
