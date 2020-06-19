@@ -36,7 +36,7 @@ const generateUserData = () => {
       isOnline: Math.random() < 0.5,
       numProducts: Math.ceil(Math.random() * 200),
       steamLevel: Math.ceil(Math.random() * 50),
-      idBadge: Math.ceil(Math.random() * 16),
+      idBadge: Math.random() < 0.5 ? Math.ceil(Math.random() * 16) : '',
     };
 
     // Rule 3
