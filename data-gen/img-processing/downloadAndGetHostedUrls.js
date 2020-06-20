@@ -128,7 +128,11 @@ const getHostedUrls = async () => {
     return;
   }
 
-  // Get 750 user profile (avatar) URLs
+  // Get 750 user profile (avatar) URLs - last for loop retrieves last 50 URLs
+  // (Since there are only 750 URLs stored in this server)
+
+  // nextCursor / next_cursor is part of Cloudinary's API response, which allows for pagination on large requests
+  // As each request is limited to 100 resources in its response
   let nextCursor;
   for (let i = 0; i < 8; i++) {
     let options = {
