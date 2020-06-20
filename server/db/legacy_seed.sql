@@ -1,3 +1,6 @@
+-- NOTE: This is a legacy file. Seeding is now being handled by knex
+-- migrations & seeds functionalities (in /server/db)
+
 -- Before running seed script:
 -- 1. Ensure PostgreSQL service is running on port 5432
 -- 2. Run 'CREATE DATABASE steam_reviews'
@@ -54,6 +57,7 @@ CREATE TABLE reviews (
   num_comments SMALLINT
 );
 
+/*
 -- TODO: Badge URLs might need to be hosted in media bucket instead of taken from lorem picsum site. Wait for answer from TM's.
 INSERT INTO badges (title, xp, badge_url)
   VALUES
@@ -112,3 +116,4 @@ COPY reviews(
 FROM '/mnt/c/Users/Christina Wang/Documents/Coding/hack-reactor/front-end-capstone/steam-reviews/data-gen/csv-seeds/reviews.csv'
 DELIMITER ','
 CSV HEADER;
+*/
