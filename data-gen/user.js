@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const faker = require('faker');
 const { writeToCsv } = require('./utils');
+const hostedUserUrls = require('../server/db/hostedUrls.json').profiles;
 
 const NUM_USERS = 750;
 
@@ -29,10 +30,10 @@ const generateUserData = () => {
   }
 
   // Generate other data specified in users schema (seed.sql)
-  userData = userData.map((username, idx) => {
+  userData = userData.map((username) => {
     let userObj = {
       username,
-      profileUrl: `https://picsum.photos/seed/${idx * 50}/100`,
+      profileUrl: hostedUserUrls.pop(),
       isOnline: Math.random() < 0.5,
       numProducts: Math.ceil(Math.random() * 200),
       steamLevel: Math.ceil(Math.random() * 50),

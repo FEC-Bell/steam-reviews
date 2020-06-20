@@ -42,3 +42,32 @@ exports.writeToCsv = (arr, order, writePath) => {
     stream.end(arr.map(userObj => convertObjToCsv(userObj, order)).join(''));
   });
 };
+
+/**
+ * Generates a single part of a three-part hex color
+ * @returns {String}
+ */
+const generateHexUnit = () => {
+  return Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
+};
+
+/**
+ * Generates a random hexadecimal color between #000000 and #ffffff
+ * @returns {String}: hex color with format nnnnnn (no need for hash)
+ */
+exports.getRandomHexColor = () => {
+  let randR = generateHexUnit();
+  let randG = generateHexUnit();
+  let randB = generateHexUnit();
+
+  return `${randR}${randG}${randB}`;
+};
+
+/**
+ * Generates a random index between 0 and limit
+ * @param {Integer} limit
+ * @returns {Integer}
+ */
+exports.getRandIdx = (limit) => {
+  return Math.floor(Math.random() * limit);
+};
