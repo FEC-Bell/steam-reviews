@@ -8,7 +8,7 @@ exports.seed = function (knex) {
     .then(() => {
       // Inserts seed entries from generated .csv data
       return knex.transaction(async (trx) => {
-        const fileStream = fs.createReadStream(path.resolve(__dirname, '..', '..', '..', 'data-gen', 'csv-seeds', 'reviews.csv'));
+        const fileStream = fs.createReadStream(path.resolve(__dirname, '..', '..', 'data-gen', 'csv-seeds', 'reviews.csv'));
         try {
           await copyToTable(
             trx,

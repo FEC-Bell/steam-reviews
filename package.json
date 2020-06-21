@@ -4,7 +4,7 @@
   "description": "Reviews module for Steam app clone",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed": "npx knex migrate:rollback && npx knex migrate:latest && npx knex seed:run",
+    "seed": "npm i -g knex && knex migrate:rollback && knex migrate:latest && knex seed:run && npm un -g knex",
     "server-dev": "nodemon server/index.js",
     "client-dev": "webpack-dev-server --mode development --hot --open",
     "lint": "eslint client/** --fix",
@@ -30,6 +30,7 @@
     "eslint": "^7.2.0",
     "eslint-config-hackreactor": "github:hackreactor-labs/eslint-config-hackreactor",
     "faker": "^4.1.0",
+    "jest": "^26.0.1",
     "node-fetch": "^2.6.0",
     "nodemon": "^2.0.4",
     "pg-copy-streams": "^5.1.0",

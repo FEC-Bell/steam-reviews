@@ -10,20 +10,20 @@ module.exports = {
       database: 'steam_reviews'
     },
     migrations: {
-      directory: path.resolve(__dirname, 'server', 'db', 'migrations')
+      directory: path.resolve(__dirname, 'db', 'migrations')
     },
     seeds: {
-      directory: path.resolve(__dirname, 'server', 'db', 'seeds')
+      directory: path.resolve(__dirname, 'db', 'seeds')
     }
   },
   production: {
     client: 'pg',
     connection: process.env.PGDB_URI,
     migrations: {
-      directory: path.resolve(__dirname, 'server', 'db', 'migrations')
+      directory: path.resolve(__dirname, 'db', 'migrations')
     },
     seeds: {
-      directory: path.resolve(__dirname, 'server', 'db', 'seeds', 'production')
+      directory: path.resolve(__dirname, 'db', 'seeds', 'production')
     }
   }
 };
