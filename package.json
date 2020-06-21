@@ -4,7 +4,7 @@
   "description": "Reviews module for Steam app clone",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed": "knex migrate:rollback && knex migrate:latest && knex seed:run",
+    "seed": "npx knex migrate:rollback && npx knex migrate:latest && npx knex seed:run",
     "server-dev": "nodemon server/index.js",
     "client-dev": "webpack-dev-server --mode development --hot --open",
     "lint": "eslint client/** --fix",
