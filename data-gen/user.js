@@ -1,8 +1,5 @@
-const fs = require('fs');
-const path = require('path');
 const faker = require('faker');
-const { writeToCsv } = require('./utils');
-const hostedUserUrls = require('../server/db/hostedUrls.json').profiles;
+const hostedUserUrls = require('../db/hostedUrls.json').profiles;
 
 const NUM_USERS = 750;
 
@@ -55,29 +52,4 @@ const generateUserData = () => {
   return userData;
 };
 
-// Called on executing 'node data-gen/user.js'
-const main = () => {
-  fs.promises.readdir(path.resolve(__dirname, 'csv-seeds'))
-    .then(files => {
-      if (files.includes('users.csv')) {
-        throw new Error('users.csv file already generated. Check your ./data-gen/csv-seeds directory');
-      } else {
-        return generateUserData();
-      }
-    })
-    .then(data => {
-      return writeToCsv(
-        data,
-        ['username', 'profileUrl', 'isOnline', 'numProducts', 'numReviews', 'steamLevel', 'idBadge', 'isInGame', 'inGameId', 'inGameStatus'],
-        path.resolve(__dirname, 'csv-seeds', 'users.csv')
-      );
-    })
-    .then(() => process.exit(0))
-    .catch(err => {
-      console.error(err);
-      process.exit(1);
-    });
-};
-
-main();
-
+module.exports.generateUserData = generateUserData;

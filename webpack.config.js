@@ -1,7 +1,6 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'development',
   entry: path.resolve(__dirname, 'client', 'index.js'),
   output: {
     path: path.resolve(__dirname, 'public'),
@@ -23,10 +22,7 @@ module.exports = {
         include: [
           path.resolve(__dirname, 'client'),
         ],
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env', '@babel/preset-react']
-        }
+        loader: 'babel-loader'
       }
     ]
   }
