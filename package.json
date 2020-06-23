@@ -9,7 +9,7 @@
     "client-dev": "webpack-dev-server --mode development --hot --open",
     "lint": "eslint client/** --fix",
     "start": "node server/index.js",
-    "build": "webpack -d -w"
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
