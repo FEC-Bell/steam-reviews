@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { convertObjToCsv, writeToCsv, generateHexUnit, getRandomHexColor, getRandIdx } = require('./utils');
+const { convertObjToCsv, writeToCsv, generateHexUnit, getRandomHexColor, getRandIdx } = require('../../data-gen/utils');
 const { PassThrough } = require('stream');
 
 describe('Data generation utils', () => {

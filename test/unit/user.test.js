@@ -1,4 +1,4 @@
-const { generateUserData } = require('./user');
+const { generateUserData } = require('../../data-gen/user');
 
 describe('User data generation', () => {
   test('generates an array of 750 user objects with correct data fields', () => {

@@ -27,7 +27,7 @@ module.exports = {
     // Below: ignored by coverage report, as they're only used once
     '!**/downloadAndGetHostedUrls.js', // HostedUrls.json in /db is proof of concept
     '!**/copyToTable.js', // to populate the DB - DB's records are proof of concept
-
+    '!.eslintrc.js'
   ],
 
   // The directory where Jest should output its coverage files

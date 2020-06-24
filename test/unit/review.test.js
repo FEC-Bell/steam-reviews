@@ -1,4 +1,4 @@
-const { generateReviewData } = require('./review');
+const { generateReviewData } = require('../../data-gen/review');
 
 describe('Review data generation', () => {
   test('generates an array of 1000 review objects with correct data fields', () => {
