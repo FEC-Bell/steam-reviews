@@ -1,7 +1,4 @@
-const fs = require('fs');
-const path = require('path');
 const faker = require('faker');
-const { writeToCsv } = require('./utils');
 
 const REVIEWS_PER_GAME = 10;
 let unusedUserIds = new Array(750).fill(0).map((_, idx) => idx + 1);
@@ -36,7 +33,7 @@ const generateNUniqueIds = (low, high, n) => {
  * Generates REVIEWS_PER_GAME * 100 units of review data based on seed.sql reviews schema
  * @returns {Array}: REVIEWS_PER_GAME * 100 elements long
  */
-const generateReviewData = () => {
+exports.generateReviewData = () => {
   /**
    * Rules:
    * 1. id_user must be between 1-NUM_USERS (750)
@@ -93,28 +90,4 @@ const generateReviewData = () => {
   return reviewData;
 };
 
-const main = () => {
-  fs.promises.readdir(path.resolve(__dirname, 'csv-seeds'))
-    .then(files => {
-      if (files.includes('reviews.csv')) {
-        throw new Error('reviews.csv file already generated. Check your ./data-gen/csv-seeds directory');
-      } else {
-        return generateReviewData();
-      }
-    })
-    .then(data => {
-      return writeToCsv(
-        data,
-        ['idUser', 'idGame', 'isRecommended', 'hoursOnRecord', 'hoursAtReviewTime', 'purchaseType', 'datePosted', 'receivedFree', 'reviewText', 'numFoundHelpful', 'numFoundFunny', 'numComments'],
-        path.resolve(__dirname, 'csv-seeds', 'reviews.csv')
-      );
-    })
-    .then(() => process.exit(0))
-    .catch(err => {
-      console.error(err);
-      process.exit(1);
-    });
-};
-
-main();
-
+module.exports.generateNUniqueIds = generateNUniqueIds;

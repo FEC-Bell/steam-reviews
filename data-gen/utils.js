@@ -35,7 +35,7 @@ exports.writeToCsv = (arr, order, writePath) => {
     });
     stream.on('close', () => {
       console.log('users.csv seed file successfully generated. Check your ./data-gen/csv-seeds directory.');
-      resolve();
+      resolve(true);
     });
 
     stream.write(order.join(',') + '\r\n');
@@ -71,3 +71,6 @@ exports.getRandomHexColor = () => {
 exports.getRandIdx = (limit) => {
   return Math.floor(Math.random() * limit);
 };
+
+module.exports.convertObjToCsv = convertObjToCsv;
+module.exports.generateHexUnit = generateHexUnit;
