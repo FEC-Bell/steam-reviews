@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Reviews module for Steam app clone",
   "scripts": {
-    "test": "jest --testTime=10000",
+    "test": "jest --testTimeout=10000",
     "gen:data": "node data-gen/index.js",
     "seed": "npm i -g knex && npm run seed:internal && npm un -g knex",
     "seed:internal": "knex migrate:rollback && knex migrate:latest && knex seed:run",
