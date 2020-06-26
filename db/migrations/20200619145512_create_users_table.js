@@ -2,7 +2,7 @@
 exports.up = function (knex) {
   return knex.raw(
     'CREATE TABLE users(' +
-      'id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,' +
+      'id SERIAL,' +
       'username VARCHAR(50),' +
       'profile_url TEXT,' +
       'is_online BOOLEAN,' +

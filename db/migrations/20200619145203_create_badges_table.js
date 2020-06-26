@@ -2,7 +2,7 @@
 exports.up = function (knex) {
   return knex.raw(
     'CREATE TABLE badges (' +
-      'id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,' +
+      'id SERIAL,' +
       'title VARCHAR(50),' +
       'xp SMALLINT,' +
       'badge_url TEXT' +
