@@ -3,7 +3,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018
   },
-  rules: {},
+  rules: {
+    camelcase: 'off'
+  },
   env: {
     browser: true,
     node: true

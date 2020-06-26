@@ -1,7 +1,7 @@
 const faker = require('faker');
 
 const REVIEWS_PER_GAME = 10;
-let unusedUserIds = new Array(750).fill(0).map((_, idx) => idx + 1);
+
 
 /**
  * Generates n unique ids between low and high, inclusive,
@@ -9,19 +9,27 @@ let unusedUserIds = new Array(750).fill(0).map((_, idx) => idx + 1);
  * @param {Integer} low
  * @param {Integer} high
  * @param {Integer} n
+ * @param {Array} idArr: array of unused user ids to pop from before randomly generating an id
  * @returns {Array} array length n
  */
-const generateNUniqueIds = (low, high, n) => {
+const generateNUniqueIds = (low, high, n, idArr) => {
   let result = [];
   for (let i = 0; i < n; i++) {
     let uniqueId;
-    if (unusedUserIds.length) {
-      let randIdx = Math.floor(Math.random() * unusedUserIds.length);
-      uniqueId = unusedUserIds[randIdx];
-      unusedUserIds.splice(randIdx, 1);
+    if (idArr.length) {
+      let randIdx = Math.floor(Math.random() * idArr.length);
+      uniqueId = idArr[randIdx];
+      idArr.splice(randIdx, 1);
     } else {
       do {
         uniqueId = Math.floor(Math.random() * high) + low;
+        // BREAKING CASE: ids generated are not unique. This case will probably only happen during testing,
+        // where there won't be tests to see if one user has written more than one review for the same game.
+        // Else, someone will have to revisit this function to fix the id generation, if they want a range of
+        // different users reviewing each game. In short, this exception doesn't break the data generation.
+        if (high - low < n) {
+          break;
+        }
       } while (result.includes(uniqueId));
     }
     result.push(uniqueId);
@@ -30,10 +38,13 @@ const generateNUniqueIds = (low, high, n) => {
 };
 
 /**
- * Generates REVIEWS_PER_GAME * 100 units of review data based on seed.sql reviews schema
- * @returns {Array}: REVIEWS_PER_GAME * 100 elements long
+ * Generates numReviews units of review data based on reviews schema
+ * @param {Number} numReviews
+ * @param {Number} numGames
+ * @param {Number} numUsers
+ * @returns {Array}: numReviews elements long
  */
-exports.generateReviewData = () => {
+exports.generateReviewData = (numReviews = 1000, numGames = 100, numUsers = 750) => {
   /**
    * Rules:
    * 1. id_user must be between 1-NUM_USERS (750)
@@ -44,49 +55,63 @@ exports.generateReviewData = () => {
    * 6. A user may only review a game at most 1 time
    * 7. Each user reviews at least 1 game
    */
+  let unusedUserIds = new Array(numUsers).fill(0).map((_, idx) => idx + 1);
 
-  // Maps reviewData to id_game, ensuring there are REVIEWS_PER_GAME num of each game id
-  let reviewData = new Array(REVIEWS_PER_GAME * 100).fill(0);
-  reviewData = reviewData.map((_, idx) => (idx - (idx % REVIEWS_PER_GAME)) / REVIEWS_PER_GAME + 1);
+  // Get a count of how many reviews to generate per game
+  let reviewGameIds = {};
+  for (let i = 0; i < numReviews; i++) {
+    let gameId = (i % numGames) + 1;
+    reviewGameIds[gameId] ? reviewGameIds[gameId]++ : reviewGameIds[gameId] = 1;
+  }
+
+  // Fill reviewData with arrays of a game id, ensuring roughly equal game id distribution
+  // i.e. numReviews = 10, numGames = 3 ---> [[1,1,1,1], [2,2,2], [3,3,3]]
+  let reviewIds = [];
+  for (let key in reviewGameIds) {
+    reviewIds.push(new Array(reviewGameIds[key]).fill(parseInt(key)));
+  }
 
   // Generate other data specified in reviews schema
   // Rules: 1, 2, 6, 7
-  for (let i = 0; i < reviewData.length; i += REVIEWS_PER_GAME) {
-    let gameAndUserIdTuples = generateNUniqueIds(1, 750, REVIEWS_PER_GAME)
+  let reviewData = [];
+  for (let i = 0; i < reviewIds.length; i++) {
+    let gameAndUserIdTuples = generateNUniqueIds(1, numUsers, reviewIds[i].length, unusedUserIds)
       .map(idUser => ({
-        idGame: reviewData[i],
+        idGame: reviewIds[i][0],
         idUser
       }));
-    reviewData.splice(i, REVIEWS_PER_GAME, ...gameAndUserIdTuples);
+    reviewData.push(...gameAndUserIdTuples);
   }
 
-  // Rule 4 (purchaseType === 'direct' || 'key')
-  reviewData = reviewData.map(({ idGame, idUser }) => ({
-    idUser,
-    idGame,
-    isRecommended: Math.random() < parseFloat(Math.random().toFixed(1)),
-    hoursOnRecord: parseFloat((Math.random() * 4000).toFixed(1)),
-    purchaseType: Math.random() < 0.5 ? 'direct' : 'key',
-    receivedFree: Math.random() < 0.1,
-    reviewText: Math.random() < 0.5 ? faker.lorem.paragraph() : `${faker.lorem.paragraph()} ${faker.lorem.paragraph()} ${faker.lorem.paragraph()}`,
-    numFoundHelpful: Math.floor(Math.random() * 800),
-    numFoundFunny: Math.floor(Math.random() * 800),
-    numComments: Math.floor(Math.random() * 100)
-  }));
 
-  // Rule 3 (hoursAtReviewTime <= hoursOnRecord)
-  // Rule 5 (datePosted constraints) - 65% chance of being in the last 30 days
   let msIn1Year = 1000 * 60 * 60 * 24 * 365;
   let msIn30Days = 1000 * 60 * 60 * 24 * 30;
-  reviewData.forEach(reviewObj => {
+  // Rule 4 (purchaseType === 'direct' || 'key')
+  reviewData = reviewData.map(({ idGame, idUser }) => {
+    let reviewObj = {
+      idUser,
+      idGame,
+      isRecommended: Math.random() < parseFloat(Math.random().toFixed(1)),
+      hoursOnRecord: parseFloat((Math.random() * 4000).toFixed(1)),
+      purchaseType: Math.random() < 0.5 ? 'direct' : 'key',
+      receivedFree: Math.random() < 0.1,
+      reviewText: Math.random() < 0.5 ? faker.lorem.paragraph() : `${faker.lorem.paragraph()} ${faker.lorem.paragraph()} ${faker.lorem.paragraph()}`,
+      numFoundHelpful: Math.floor(Math.random() * 800),
+      numFoundFunny: Math.floor(Math.random() * 800),
+      numComments: Math.floor(Math.random() * 100)
+    };
+
+    // Rule 3 (hoursAtReviewTime <= hoursOnRecord)
+    // Rule 5 (datePosted constraints) - 65% chance of being in the last 30 days
     reviewObj.hoursAtReviewTime = parseFloat((Math.random() * reviewObj.hoursOnRecord).toFixed(1));
     let datePostedMs = Date.now();
     Math.random() <= 0.65 ? datePostedMs -= Math.floor(Math.random() * msIn30Days) : datePostedMs -= Math.floor(Math.random() * msIn1Year);
     let date = new Date(datePostedMs);
     reviewObj.datePosted = date.toISOString();
+    return reviewObj;
   });
 
-  console.log('Reviews data generated. Writing to .csv file...');
+  console.log('\n\tReviews data generated. Writing to .csv file...');
   return reviewData;
 };
 
