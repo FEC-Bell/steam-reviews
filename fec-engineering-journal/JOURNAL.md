@@ -125,6 +125,7 @@ How does one mock the file system for unit testing? Jest has a `.mockImplementat
 Excluded some files from Jest test coverage, since they're internal scripts.
 
 **Coverage**:
+
 ![Unit Test Coverage - PR6](./assets/unit-test-coverage-pr6.png)
 
 Set a global coverage threshold of 80% in accordance with best practice minimum (said in lecture maybe?)
