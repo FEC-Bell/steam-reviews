@@ -164,6 +164,6 @@ The server object has a `.close` method luckily, so I just imported it into my t
 
 **Finally, current test and coverage**:
 
-![Test Coverage PR7](./assets/test-coverage-pr7.png)
+![Test Coverage PR7](./assets/test-coverage-pr7.PNG)
 
 Biggest PR & journal entry yet! Next up: Complete frontend client.
