@@ -9,7 +9,7 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
     done();
   });
 
-  test('Basic GET request', async (done) => {
+  test('Basic valid GET request', async (done) => {
     return request(app)
       .get('/api/reviews/1')
       .expect(200)
