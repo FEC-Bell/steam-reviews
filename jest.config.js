@@ -20,7 +20,8 @@ module.exports = {
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
     '**/*.{js,jsx}',
-    '!**/index.js',
+    '!client/index.js',
+    '!data-gen/index.js', // Not testing this, as it's an internal tool.
     '!**/*file.js',
     '!**/*.config.js',
     '!**/knex.js',

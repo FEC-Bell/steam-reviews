@@ -25,4 +25,11 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
       })
       .then(() => done());
   });
+
+  test('Invalid params in GET request', async (done) => {
+    return request(app)
+      .get('/api/reviews/101')
+      .expect(400, { error: 'Invalid game ID. Please use a number between 1 and 100.' })
+      .then(() => done());
+  });
 });
