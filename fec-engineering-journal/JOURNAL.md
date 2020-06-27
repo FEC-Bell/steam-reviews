@@ -107,9 +107,11 @@ Options:
 Speed tests of each command showed these results:
 
 **Global**:
+
 ![Global Knex Speed](./assets/global-knex-speed.png)
 
 **Npx**:
+
 ![Npx Knex Speed](./assets/npx-knex-speed.png)
 
 Thus decided on global install method. Seed script: `"seed": npm i -g knex && knex migrate:rollback && knex migrate:latest && knex seed:run && npm un -g knex`
@@ -158,5 +160,9 @@ The server object has a `.close` method luckily, so I just imported it into my t
 **Third issue I ran into**: After forgetting to include postgresql as a service, including it, and increasing the test timeout of my Jest tests (integration test takes ~7.5 seconds, so set --testTimeout=10000)... During the Travis CI build of my now-completed PR, I ran into a syntax issue in the `GENERATED ALWAYS AS IDENTITY` lines of my Knex migrate scripts.
 
 **Solution for this issue**: Changed `GENERATED ALWAYS AS IDENTITY` to `SERIAL` with the help of Help Desk, which fixed the problem.
+
+**Finally, current test and coverage**:
+
+![Test Coverage PR7](./assets/test-coverage-pr7.png)
 
 Biggest PR & journal entry yet! Next up: Complete frontend client.
