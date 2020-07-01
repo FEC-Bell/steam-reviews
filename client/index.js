@@ -1,4 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReviewsModule from './src/ReviewsModule';
 
-ReactDOM.render(<div>Hello World</div>, document.getElementById('app'));
+ReactDOM.render(<ReviewsModule />, document.getElementById('app'));
