@@ -9,34 +9,37 @@ const OptionCountSpan = styled.span`
 `;
 
 // Modular radio input (with label) component for filter menu dropdowns
-const RadioInputWithLabel = ({ option, checkedOption, menuUnitTitle, count, handleChange, tooltipMessage }) => (
-  <FlexDiv alignItems={'center'}>
-    <input
-      type="radio"
-      value={option}
-      name={menuUnitTitle}
-      id={`${menuUnitTitle}_${option}`}
-      checked={option === checkedOption}
-      onChange={() => handleChange(option, menuUnitTitle)}
-    />
-    <label htmlFor={`${menuUnitTitle}_${option}`}>
-      &nbsp;{option}&nbsp;
+const RadioInputWithLabel = ({ title, option, checkedOption, count, handleChange, tooltipMessage }) => {
+  const menuUnitTitle = title.toLowerCase().split(' ').join('_');
+  return (
+    <FlexDiv alignItems={'center'}>
+      <input
+        type="radio"
+        value={option}
+        name={menuUnitTitle}
+        id={`${menuUnitTitle}_${option}`}
+        checked={option === checkedOption}
+        onChange={() => handleChange(title, option)}
+      />
+      <label htmlFor={`${menuUnitTitle}_${option}`}>
+        &nbsp;{option}&nbsp;
+        {
+          count ?
+            <OptionCountSpan>({addCommaToCount(count)})</OptionCountSpan> :
+            ''
+        }
+      </label>
       {
-        count ?
-          <OptionCountSpan>({addCommaToCount(count)})</OptionCountSpan> :
+        tooltipMessage ?
+          <InfoTooltip
+            message={tooltipMessage}
+            xOff={5}
+            yOff={20}
+          /> :
           ''
       }
-    </label>
-    {
-      tooltipMessage ?
-        <InfoTooltip
-          message={tooltipMessage}
-          xOff={5}
-          yOff={20}
-        /> :
-        ''
-    }
-  </FlexDiv>
-);
+    </FlexDiv>
+  );
+};
 
 export default RadioInputWithLabel;

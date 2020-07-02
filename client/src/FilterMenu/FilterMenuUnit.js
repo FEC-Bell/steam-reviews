@@ -67,7 +67,7 @@ const Dropdown = styled.div`
 /**
  * MAIN COMPONENT
  */
-const FilterMenuUnit = ({ title, options, handleFilterChange }) => (
+const FilterMenuUnit = ({ checkedOption, updateCheckedOption, title, options, handleFilterChange }) => (
   <MenuUnit isDisplayAs={title === 'Display As'}>
     {
       // If dropdown === Display as, display a title without arrow and a select dropdown
@@ -76,7 +76,7 @@ const FilterMenuUnit = ({ title, options, handleFilterChange }) => (
           <FlexDiv alignItems={'center'} flexWrap={'wrap'}>
             <Title>{title}:</Title>
             <StyledSelect
-              onChange={(e) => handleFilterChange(title, e.target.value)}
+              onChange={(e) => updateCheckedOption(title, e.target.value)}
             >
               {
                 options.map((option, idx) => <option value={option.toLowerCase().split(' ').join('-')} key={idx}>{option}</option>)
@@ -93,6 +93,8 @@ const FilterMenuUnit = ({ title, options, handleFilterChange }) => (
                 <DropdownContent
                   title={title}
                   options={options}
+                  checkedOption={checkedOption}
+                  updateCheckedOption={updateCheckedOption}
                   handleFilterChange={handleFilterChange}
                 />
               </Dropdown>

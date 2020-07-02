@@ -16,7 +16,7 @@ const StyledMenu = styled.div`
 /**
  * MAIN COMPONENT
  */
-const FilterMenu = ({ filterOrder, filterMenuOpts, filterMenuCounts, handleFilterChange }) => {
+const FilterMenu = ({ checkedOptions, updateCheckedOption, filterOrder, filterMenuOpts, filterMenuCounts, handleFilterChange }) => {
   return (
     <StyledMenu>
       {
@@ -24,6 +24,8 @@ const FilterMenu = ({ filterOrder, filterMenuOpts, filterMenuCounts, handleFilte
         // mapping with filterOrder ensures the order stays the same every time
         filterOrder.map((title, idx) => (
           <FilterMenuUnit
+            checkedOption={checkedOptions[title]}
+            updateCheckedOption={updateCheckedOption}
             title={title}
             key={idx}
             options={filterMenuCounts[title] ? filterMenuCounts[title] : filterMenuOpts[title]}

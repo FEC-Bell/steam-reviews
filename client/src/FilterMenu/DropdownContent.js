@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import RadioInputWithLabel from './RadioInputWithLabel';
 import DoubleEndedSlider from './DoubleEndedSlider';
@@ -98,7 +98,7 @@ const ZIndexWrapper = styled.div`
 /**
  * MAIN COMPONENT: Modular dropdown menu
  */
-const DropdownContent = ({ title, options, handleFilterChange }) => {
+const DropdownContent = ({ checkedOption, updateCheckedOption, title, options, handleFilterChange }) => {
   /**
    * STATIC VARIABLES
    */
@@ -122,29 +122,18 @@ const DropdownContent = ({ title, options, handleFilterChange }) => {
   });
 
   /**
-   * STATE
-   */
-  const [checkedOption, setCheckedOption] = useState(defaultCheckedOptions.current[title]);
-
-  /**
    * HANDLERS & EVENT HOOKS
    */
-  /**
-   * Updates active input on radio click. Also called by Playtime slider
-   * when slider is dragged.
-   * @param {String} option: 'All', 'Lifetime', 'No Minimum', etc.
-   */
-  const updateCheckedOption = useCallback((option) => {
-    setCheckedOption(option);
-  }, []);
-
   // Updates filter tags in FilterInfo component on checkedOption update
   useEffect(() => {
-    // Prevent handleFilterChange from firing unnecessarily on component mount
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-    } else {
-      handleFilterChange(title, checkedOption);
+    // Playtime handler logic is located in DoubleEndedSlider
+    if (title !== 'Playtime') {
+      // Prevent handleFilterChange from firing unnecessarily on component mount
+      if (isInitialMount.current) {
+        isInitialMount.current = false;
+      } else {
+        handleFilterChange(title, checkedOption);
+      }
     }
   }, [checkedOption]);
 
@@ -181,9 +170,9 @@ const DropdownContent = ({ title, options, handleFilterChange }) => {
         (Array.isArray(options) ? options : Object.keys(options)).map((option, idx) =>
           <RadioInputWithLabel
             key={idx}
+            title={title}
             option={option}
             checkedOption={checkedOption}
-            menuUnitTitle={title.toLowerCase().split(' ').join('_')}
             count={!Array.isArray(options) ? options[option] : null}
             handleChange={updateCheckedOption}
             tooltipMessage={tooltipMessages.current[title] ? tooltipMessages.current[title][option] : null}

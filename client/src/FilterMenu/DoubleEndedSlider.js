@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { BoldText, NoSelect } from '../UIUXUtils';
 
@@ -101,13 +101,8 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
   /**
    * HOOKS AND HANDLERS
    */
-  // Set slider boundaries, starting slider range on component mount
+  // Set slider boundaries & starting slider range on component mount
   useEffect(() => {
-    /**
-     * All DOM refs can be stored above except slider-track & slider-range, which
-     * needs to be acquired dynamically to prevent 'cannot read property
-     * of undefined' error
-     */
     let { x: sX, width: sWidth } = document.getElementById('slider-track').getBoundingClientRect();
     setSliderBoundaries({
       min: sX,
@@ -140,6 +135,9 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
       left: sliderMinMaxVals.min,
       width: sliderMinMaxVals.max - sliderMinMaxVals.min
     });
+    if (!isDragging.min && !isDragging.max && !isInitialMount.current) {
+      handleFilterChange('Playtime', sliderMinMaxVals);
+    }
   }, [sliderMinMaxVals]);
 
   // Update slider-range div styles on sliderRange change
@@ -154,10 +152,17 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
     const match = checkedOption.match(/(\d+)/);
     // Since min & max thumbs are in same position for 100 hrs, ensure min thumb has higher z-index
     match && match[0] === '100' && setLastDraggedThumbId(1);
-    setSliderMinMaxVals({
-      min: match ? parseInt(match[0]) : 0,
-      max: 100
-    });
+    if (match) {
+      setSliderMinMaxVals({
+        min: parseInt(match[0]),
+        max: 100
+      });
+    } else if (checkedOption === 'No Minimum') {
+      setSliderMinMaxVals({
+        min: 0,
+        max: 100
+      });
+    }
   }, [checkedOption]);
 
   /**
@@ -221,13 +226,13 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
    * Fires on mousedown on slider thumb
    * @param {Number} id: slider thumb id, default either 1 or 2
    */
-  const handleDragStart = useCallback((id) => {
+  const handleDragStart = (id) => {
     // Set input radio value to empty string
     updateOption('');
 
     setLastDraggedThumbId(id);
     setIsDragging({ [id === sliderThumbIds[0] ? 'min' : 'max']: true, [id === sliderThumbIds[1] ? 'min' : 'max']: false });
-  }, []);
+  };
 
   /**
    * Adds event listener while dragging. Event listeners will self-remove
@@ -242,9 +247,6 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
       document.addEventListener('mousemove', handleDrag);
       document.addEventListener('mouseup', handleDragEnd, { once: true });
     } else {
-      document.getElementById('range-min').value = sliderMinMaxVals.min;
-      document.getElementById('range-max').value = sliderMinMaxVals.max;
-
       // Prevent handleFilterChange from firing unnecessarily on component mount
       if (isInitialMount.current) {
         isInitialMount.current = false;
@@ -273,6 +275,7 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
    */
   const handleSliderClick = ({ pageX }) => {
     let closestThumb = getClosestThumbToClick(pageX);
+    // TODO: Clicking
     setSliderMinMaxVals(prevVals => ({
       ...prevVals,
       [closestThumb === sliderThumbIds[0] ? 'min' : 'max']: computeLeftPercent(pageX, closestThumb)
@@ -331,16 +334,18 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
           id="range-min"
           min="0"
           max="100"
-          defaultValue={sliderMinMaxVals.min}
+          value={sliderMinMaxVals.min}
           isMin={true}
+          readOnly
         />
         <RangeInput
           type="range"
           id="range-max"
           min="0"
           max="100"
-          defaultValue={sliderMinMaxVals.max}
+          value={sliderMinMaxVals.max}
           isMin={false}
+          readOnly
         />
         {/*
           Input-representing double-ended slider. Does not interact with server, but user interaction changes
@@ -358,7 +363,7 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
           left={sliderMinMaxVals.min}
           isMin={true}
           isLastDragged={lastDraggedThumbId === sliderThumbIds[0]}
-          onMouseDownCapture={() => handleDragStart(sliderThumbIds[0])}
+          onMouseDown={() => handleDragStart(sliderThumbIds[0])}
         />
         <SliderThumb
           draggable="false"
@@ -366,7 +371,7 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
           left={sliderMinMaxVals.max}
           isMin={false}
           isLastDragged={lastDraggedThumbId === sliderThumbIds[1]}
-          onMouseDownCapture={() => handleDragStart(sliderThumbIds[1])}
+          onMouseDown={() => handleDragStart(sliderThumbIds[1])}
         />
       </SliderContainer>
     </React.Fragment>

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { GlobalStyle } from './GlobalStyle';
 import FilterMenu from './FilterMenu/FilterMenu';
 import FilterInfo from './FilterInfo/FilterInfo';
 
-import { gameTitle, gameRating, summaryQueryRes, funnyQueryRes } from '../data/sampleData';
+import { gameTitle, gameRating, summaryQueryRes, funnyQueryRes } from '../../test/fixtures/sampleData';
 
 /**
  * ROOT COMPONENT
@@ -35,7 +35,7 @@ const ReviewsModule = () => {
    */
   const [gameSentiment, setGameSentiment] = useState('');
   const [reviewCount, setReviewCount] = useState(0);
-  const [activeFilterDisplay, setActiveFilterDisplay] = useState({
+  const [activeFilters, setActiveFilters] = useState({
     'Review Type': null,
     'Purchase Type': null,
     'Language': 'Your Languages',
@@ -59,6 +59,19 @@ const ReviewsModule = () => {
       'Your Languages': 0
     }
   });
+
+  // Checked options: values used by controller inputs in FilterMenu
+  const defaultCheckedOptions = useRef({
+    'Review Type': 'All',
+    'Purchase Type': 'All',
+    'Language': 'Your Languages',
+    'Date Range': 'Lifetime',
+    'Playtime': 'No Minimum',
+    'Display As': 'summary'
+  });
+  const [checkedOptions, setCheckedOptions] = useState(defaultCheckedOptions.current);
+
+  const isInitialMount = useRef(true);
 
   /**
    * HANDLERS & EFFECT HOOKS
@@ -113,53 +126,75 @@ const ReviewsModule = () => {
       });
   }, []);
 
-  /**
-   * Get the appropriate tag name to display in Filter breadcrumbs beneath menu.
-   * @param {String} title: one of [Review Type, Purchase Type, Language, Date Range, Playtime]
-   * @param {String|Object} inputVal: if string, equal to displayed radio labels. If object, equal to a Playtime range
-   * @param {Number} [inputVal.min]: minimum playtime if input val is object
-   * @param {Number} [inputVal.max]: maximum playtime if input val is object
-   */
-  const getFilterTagDisplay = useCallback((title, inputVal) => {
-    if (title !== 'Date Range' && typeof inputVal === 'string') {
-      return inputVal === 'Other' ?
-        'Not Purchased on Steam' : (
-          title === 'Playtime' ?
-            `Playtime: ${inputVal}` :
-            inputVal
-        );
+  // Make a new GET request with updated params on active filter change
+  useEffect(() => {
+    // Prevent double GET request on component mount
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      console.log('TODO: GET request with updated params: ReviewsModule.js line 134');
     }
-    if (title === 'Date Range') {
-      return 'TODO: Hook up to review-graph api';
-    }
-    // Already checked for string inputVal above -- handle object inputVal here
-    if (title === 'Playtime') {
-      return JSON.stringify(inputVal);
-    }
-  }, []);
+  }, [activeFilters]);
 
-  const handleActiveFilterChange = useCallback((title, inputVal) => {
+  /**
+   * Update the checked input option for a given filter dropdown
+   * @param {String} title
+   * @param {String} option
+   */
+  const updateCheckedOption = (title, option) => {
+    setCheckedOptions(prevOptions => ({
+      ...prevOptions,
+      [title]: option
+    }));
+  };
+
+  /**
+   * Reset a filter to its default
+   * @param {String} title
+   */
+  const resetOption = (title) => {
+    updateCheckedOption(title, title === 'Language' ? 'All Languages' : defaultCheckedOptions.current[title]);
+  };
+
+  /**
+   * Set activeFilter according to passed in values. Setting activeFilter triggers a tag display update
+   * @param {String} title
+   * @param {String|Object} inputVal
+   */
+  const handleActiveFilterChange = (title, inputVal) => {
     // Exit handler if Playtime dropdown slider is used, setting select value to empty (but still triggering handleActiveFilterChange)
     if (!inputVal) {
       return;
     }
-    if (hiddenFilters.current[title] === inputVal) {
-      setActiveFilterDisplay(prevFilters => ({
+
+    if (hiddenFilters.current[title] === inputVal || (typeof inputVal === 'object' && inputVal.min === 0 && inputVal.max === 100)) {
+      setActiveFilters(prevFilters => ({
         ...prevFilters,
         [title]: null
       }));
       return;
     }
-    setActiveFilterDisplay(prevFilters => ({
+
+    if (title === 'Display As') {
+      setActiveFilters(prevFilters => ({
+        ...prevFilters,
+        [title]: inputVal === 'summary' ? null : inputVal.split('-').slice(-1)[0]
+      }));
+      return;
+    }
+
+    setActiveFilters(prevFilters => ({
       ...prevFilters,
-      [title]: getFilterTagDisplay(title, inputVal)
+      [title]: inputVal
     }));
-  }, []);
+  };
 
   return (
     <React.Fragment>
       <GlobalStyle />
       <FilterMenu
+        checkedOptions={checkedOptions}
+        updateCheckedOption={updateCheckedOption}
         filterOrder={filterMenuOrder.current}
         filterMenuOpts={filterMenuOpts.current}
         filterMenuCounts={filterMenuCounts}
@@ -167,9 +202,10 @@ const ReviewsModule = () => {
       />
       <FilterInfo
         filterOrder={filterMenuOrder.current}
-        activeFilterDisplay={activeFilterDisplay}
+        activeFilters={activeFilters}
         gameSentiment={gameSentiment}
         reviewCount={reviewCount}
+        resetOption={resetOption}
       />
     </React.Fragment>
   );

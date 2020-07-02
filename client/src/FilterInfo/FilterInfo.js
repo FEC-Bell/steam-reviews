@@ -22,10 +22,14 @@ const RatingText = styled(BoldText)`
   cursor: help;
 `;
 
-const FilterInfo = ({ filterOrder, activeFilters, gameSentiment, reviewCount }) => {
+const FilterInfo = ({ resetOption, filterOrder, activeFilters, gameSentiment, reviewCount }) => {
   return (
     <FilterInfoContainer>
-      <FilterTags filterOrder={filterOrder} activeFilters={activeFilters} />
+      <FilterTags
+        filterOrder={filterOrder}
+        activeFilters={activeFilters}
+        resetOption={resetOption}
+      />
       <FilterScoreInfo className='emphasis-font'>
         Showing&nbsp;
         <BoldText weight={900}>{reviewCount}</BoldText>
