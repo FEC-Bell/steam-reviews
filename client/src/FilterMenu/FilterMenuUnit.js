@@ -68,7 +68,7 @@ const Dropdown = styled.div`
  * MAIN COMPONENT
  */
 const FilterMenuUnit = ({ checkedOption, updateCheckedOption, title, options, handleFilterChange }) => (
-  <MenuUnit isDisplayAs={title === 'Display As'}>
+  <MenuUnit isDisplayAs={title === 'Display As'} data-testid="menu-unit-wrapper">
     {
       // If dropdown === Display as, display a title without arrow and a select dropdown
       title === 'Display As' ?
@@ -76,10 +76,19 @@ const FilterMenuUnit = ({ checkedOption, updateCheckedOption, title, options, ha
           <FlexDiv alignItems={'center'} flexWrap={'wrap'}>
             <Title>{title}:</Title>
             <StyledSelect
+              data-testid="display-as-select"
               onChange={(e) => updateCheckedOption(title, e.target.value)}
             >
               {
-                options.map((option, idx) => <option value={option.toLowerCase().split(' ').join('-')} key={idx}>{option}</option>)
+                options.map((option, idx) => (
+                  <option
+                    value={option.toLowerCase().split(' ').join('-')}
+                    key={idx}
+                    data-testid={`option-${idx}`}
+                  >
+                    {option}
+                  </option>)
+                )
               }
             </StyledSelect>
           </FlexDiv>

@@ -11,21 +11,25 @@ const OptionCountSpan = styled.span`
 // Modular radio input (with label) component for filter menu dropdowns
 const RadioInputWithLabel = ({ title, option, checkedOption, count, handleChange, tooltipMessage }) => {
   const menuUnitTitle = title.toLowerCase().split(' ').join('_');
+  const menuUnitOption = option.toLowerCase().split(' ').join('_');
   return (
-    <FlexDiv alignItems={'center'}>
+    <FlexDiv alignItems={'center'} data-testid="input-container">
       <input
         type="radio"
         value={option}
         name={menuUnitTitle}
-        id={`${menuUnitTitle}_${option}`}
+        id={`${menuUnitTitle}_${menuUnitOption}`}
         checked={option === checkedOption}
         onChange={() => handleChange(title, option)}
+        data-testid={`${menuUnitTitle}_${menuUnitOption}`}
       />
-      <label htmlFor={`${menuUnitTitle}_${option}`}>
+      <label htmlFor={`${menuUnitTitle}_${menuUnitOption}`}>
         &nbsp;{option}&nbsp;
         {
           count ?
-            <OptionCountSpan>({addCommaToCount(count)})</OptionCountSpan> :
+            <OptionCountSpan>
+              ({addCommaToCount(count)})
+            </OptionCountSpan> :
             ''
         }
       </label>

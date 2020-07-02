@@ -16,8 +16,8 @@ const fadeOut = keyframes`
 
 const TooltipDiv = styled.div`
   position: absolute;
-  bottom: ${props => props.y || 0};
-  left: ${props => props.x || 0};
+  bottom: ${props => props.y ? `${props.y}px` : '20px'};
+  left: ${props => props.x ? `${props.x}px` : '5px'};
   padding: 5px;
   box-sizing: border-box;
   width: 300px;
@@ -58,13 +58,18 @@ const InfoTooltip = ({ message, xOff, yOff }) => {
 
   return (
     <RelativeParentContainer>
-      <TooltipDiv x={`${xOff}px`} y={`${yOff}px`} open={tooltipOpen}>
+      <TooltipDiv
+        x={xOff}
+        y={yOff}
+        open={tooltipOpen}
+      >
         {message}
       </TooltipDiv>
       <StyledImg
         onMouseEnter={() => setTooltipOpen(true)}
         onMouseOut={() => setTooltipOpen(false)}
         src="https://steamstore-a.akamaihd.net/public/shared/images/ico/icon_questionmark_dark.png"
+        alt="tooltip-image"
       />
     </RelativeParentContainer>
   );

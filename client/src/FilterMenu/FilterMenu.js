@@ -24,11 +24,12 @@ const FilterMenu = ({ checkedOptions, updateCheckedOption, filterOrder, filterMe
         // mapping with filterOrder ensures the order stays the same every time
         filterOrder.map((title, idx) => (
           <FilterMenuUnit
+            data-testid="filter-menu-unit"
             checkedOption={checkedOptions[title]}
             updateCheckedOption={updateCheckedOption}
             title={title}
             key={idx}
-            options={filterMenuCounts[title] ? filterMenuCounts[title] : filterMenuOpts[title]}
+            options={filterMenuCounts[title] || filterMenuOpts[title]}
             handleFilterChange={handleFilterChange}
           />
         ))

@@ -132,7 +132,7 @@ const ReviewsModule = () => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
-      console.log('TODO: GET request with updated params: ReviewsModule.js line 134');
+      console.log('TODO: GET request with updated params: ReviewsModule.js line 135');
     }
   }, [activeFilters]);
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import RadioInputWithLabel from './RadioInputWithLabel';
 import DoubleEndedSlider from './DoubleEndedSlider';
@@ -113,14 +113,6 @@ const DropdownContent = ({ checkedOption, updateCheckedOption, title, options, h
     }
   });
 
-  const defaultCheckedOptions = useRef({
-    'Review Type': 'All',
-    'Purchase Type': 'All',
-    'Language': 'Your Languages',
-    'Date Range': 'Lifetime',
-    'Playtime': 'No Minimum'
-  });
-
   /**
    * HANDLERS & EVENT HOOKS
    */
@@ -155,7 +147,7 @@ const DropdownContent = ({ checkedOption, updateCheckedOption, title, options, h
         title === 'Playtime' ?
           <React.Fragment>
             <SteamLabsDesc>
-              <SteamLabsLogo src="https://steamcdn-a.akamaihd.net/store/labs/main/images/steam_labs_logo.svg" />
+              <SteamLabsLogo src="https://steamcdn-a.akamaihd.net/store/labs/main/images/steam_labs_logo.svg" alt="steam-labs-logo" />
               Brought to you by Steam Labs
             </SteamLabsDesc>
             <PlaytimeExplanation>

@@ -123,8 +123,8 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
    */
   const updateSliderDisplay = ({ min, max }) => {
     setSliderDisplay({
-      min: min === 0 ? 'No Minimum' : `${min} hour(s)`,
-      max: max === 0 || max === 100 ? 'No Maximum' : `${max} hour(s)`
+      min: min === 0 ? 'No minimum' : `${min} hour(s)`,
+      max: max === 0 || max === 100 ? 'No maximum' : `${max} hour(s)`
     });
   };
 
@@ -337,6 +337,7 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
           value={sliderMinMaxVals.min}
           isMin={true}
           readOnly
+          data-testid="input-1"
         />
         <RangeInput
           type="range"
@@ -346,6 +347,7 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
           value={sliderMinMaxVals.max}
           isMin={false}
           readOnly
+          data-testid="input-2"
         />
         {/*
           Input-representing double-ended slider. Does not interact with server, but user interaction changes
@@ -355,8 +357,15 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
           Range: Blue foreground bar, showing selected range area. Always bounded by two thumbs.
           Thumbs: two circular handles for changing range.
         */}
-        <SliderTrack id="slider-track" onClick={handleSliderClick} />
-        <SliderRange id="slider-range" />
+        <SliderTrack
+          id="slider-track"
+          onClick={handleSliderClick}
+          data-testid="slider-track"
+        />
+        <SliderRange
+          id="slider-range"
+          data-testid="slider-range"
+        />
         <SliderThumb
           draggable="false"
           id={`slider-thumb-${sliderThumbIds[0]}`}
@@ -364,6 +373,7 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
           isMin={true}
           isLastDragged={lastDraggedThumbId === sliderThumbIds[0]}
           onMouseDown={() => handleDragStart(sliderThumbIds[0])}
+          data-testid="slider-thumb-1"
         />
         <SliderThumb
           draggable="false"
@@ -372,6 +382,7 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
           isMin={false}
           isLastDragged={lastDraggedThumbId === sliderThumbIds[1]}
           onMouseDown={() => handleDragStart(sliderThumbIds[1])}
+          data-testid="slider-thumb-2"
         />
       </SliderContainer>
     </React.Fragment>

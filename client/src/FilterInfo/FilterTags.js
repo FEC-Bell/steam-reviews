@@ -47,13 +47,22 @@ const FilterTags = ({ resetOption, filterOrder, activeFilters }) => {
     }
     // Already checked for string inputVal above -- handle object inputVal here
     if (title === 'Playtime') {
-
-      return `Playtime: ${inputVal.max === 100 ? 'Over ' : ''}${inputVal.min} hour(s)${inputVal.max !== 100 ? ` to ${inputVal.max} hour(s)` : ''}`;
+      let returnStr = 'Playtime: ';
+      if (inputVal.max === 100 && inputVal.min !== 100) {
+        returnStr += 'Over ';
+      }
+      returnStr += `${inputVal.min} hour(s)`;
+      if (inputVal.max === 100 && inputVal.min === 100 && !returnStr.includes('Over')) {
+        returnStr += ' to No maximum';
+      } else if (inputVal.max !== 100) {
+        returnStr += ` to ${inputVal.max} hour(s)`;
+      }
+      return returnStr;
     }
   };
 
   return (
-    <FlexDiv flexWrap={'wrap'} alignItems={'center'}>
+    <FlexDiv flexWrap={'wrap'} alignItems={'center'} data-testid="tags-wrapper">
       {
         validTagsToBeDisplayed.length ?
           <TitleLabel className='emphasis-font'>Filters</TitleLabel> :
@@ -64,6 +73,7 @@ const FilterTags = ({ resetOption, filterOrder, activeFilters }) => {
           <Tag
             key={idx}
             onClick={() => { resetOption(title); }}
+            data-testid="filter-tag"
           >
             {getFilterTagDisplay(title, activeFilters[title])}
           </Tag>
