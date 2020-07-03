@@ -76,7 +76,7 @@ npm install
     PORT=3001
     PG_PASS=your_password_here
     ```
-    This line is the password for accessing your PostgreSQL service. You may add other environment variables to this file, and access them throughout your code via adding the line `require('dotenv').config()` in your code. If you did not provide a password during PostgreSQL installation, delete `your_password_here` from the above line. The `.env` file has been `.gitignore`d for your convenience.
+    The PG_PASS line is the password for accessing your PostgreSQL service. You may add other environment variables to this file, and access them throughout your code via adding the line `require('dotenv').config()` in your code. If you did not provide a password during PostgreSQL installation, delete `your_password_here` from the above line. The `.env` file has been `.gitignore`d for your convenience.
 
 4. Seed the database with `npm run seed`.
     - You may check that the DB has the proper entries via `psql` CLI tool:
