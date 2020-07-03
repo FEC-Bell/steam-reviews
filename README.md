@@ -71,8 +71,9 @@ npm install
 
     Further development assumes that PostgreSQL is running on its default port, 5432, and has been installed with the default settings otherwise.
 
-3. Create file named `.env` containing the following line:
+3. Create file named `.env` containing the following lines:
     ```
+    PORT=3001
     PG_PASS=your_password_here
     ```
     This line is the password for accessing your PostgreSQL service. You may add other environment variables to this file, and access them throughout your code via adding the line `require('dotenv').config()` in your code. If you did not provide a password during PostgreSQL installation, delete `your_password_here` from the above line. The `.env` file has been `.gitignore`d for your convenience.
