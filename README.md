@@ -18,6 +18,8 @@ Reviews service for Team Bell's Steam app clone
 2. [Requirements](#requirements)
 3. [Development](#development)
 4. [Service Endpoints](#service-endpoints)
+    - [GET /api/reviews/:gameid](#get-apireviewsgameid)
+    - [Query parameters](#query-parameters-urlsearchparams-for-apireviewsgameid)
 5. [Troubleshooting](#troubleshooting)
     - [Troubleshooting PostgreSQL](#troubleshooting-postgresql)
 
