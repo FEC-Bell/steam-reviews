@@ -3,6 +3,27 @@
 
 Cloning the [Steam](https://store.steampowered.com/app/289070/Sid_Meiers_Civilization_VI/) app. My modules: Reviews, Game Description. This journal concerns the __Reviews__ module.
 
+## Table of Contents
+
+1. [Set up developer environment and dependencies](#pr1-set-up-developer-environment-and-dependencies)
+2. [Generate db seed data](#pr2-generate-db-seed-data)
+    - [Set up PostgreSQL](#set-up-postgresql)
+    - [Seeding](#seeding)
+        - [Write SQL seed file](#write-sql-seed-file)
+        - [Generate .CSV data](#generate-csv-data)
+        - [Pipe generated .csv files into DB](#pipe-generated-csv-files-into-db)
+3. [Ensure not all users have a badge id in generated data](#pr3-ensure-not-all-users-have-a-badge-id-in-generated-data)
+4. [Change placeholders to hosted image URLs](#pr4-change-placeholders-to-hosted-image-urls)
+5. [Automate db seed task with Knex](#pr5-automate-db-seed-task-with-knex)
+6. [Setup & write tests, add CI & coverage](#pr6-setup--write-tests-add-ci--coverage)
+7. [Complete backend: routes, db, tests](#pr7-complete-backend-routes-db-tests)
+8. [Complete Filter Menu, Filter Info portions of React client](#pr8-complete-filter-menu-filter-info-portions-of-react-client)
+    - [Create component scaffold](#create-component-scaffold)
+    - [Filter menu with dropdowns](#filter-menu-with-dropdowns)
+        - [Playtime filter menu](#heavy_check_mark-playtime-filter-menu)
+    - [Filter Tags](#filter-tags)
+    - [Set up React-Testing-Library, write tests](#set-up-react-testing-library-write-tests)
+ 
 ## [PR1](https://github.com/FEC-Bell/steam-reviews/pull/1): Set up developer environment and dependencies
 
 Decided on webpack-dev-server for its hot reload feature, which will come in handy when coding the frontend. Also good for its proxy server feature for redirecting requests from the frontend to the backend localhost.
