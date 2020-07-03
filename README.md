@@ -193,8 +193,8 @@ Data shape:
     - ONLY Summary will bring up the right-sided "Recently Posted" reviews sub-module
 
 - Example:
-    - `/api/reviews/:gameid?review_type=negative&from=365&play_min=50`
-    - Get all negative reviews from a year ago until now from people who`ve played at least 50 hours
+    - `/api/reviews/:gameid?review_type=negative&from=2019-06-01&play_min=50`
+    - Get all negative reviews from last June 1st until now from people who`ve played at least 50 hours
 
 
 ## Troubleshooting
