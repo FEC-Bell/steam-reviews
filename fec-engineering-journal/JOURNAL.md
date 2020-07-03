@@ -23,7 +23,7 @@ Cloning the [Steam](https://store.steampowered.com/app/289070/Sid_Meiers_Civiliz
         - [Playtime filter menu](#heavy_check_mark-playtime-filter-menu)
     - [Filter Tags](#filter-tags)
     - [Set up React-Testing-Library, write tests](#set-up-react-testing-library-write-tests)
- 
+
 ## [PR1](https://github.com/FEC-Bell/steam-reviews/pull/1): Set up developer environment and dependencies
 
 Decided on webpack-dev-server for its hot reload feature, which will come in handy when coding the frontend. Also good for its proxy server feature for redirecting requests from the frontend to the backend localhost.
@@ -243,6 +243,8 @@ Issue that arose during testing:
 1. I use `Element.prototype.getBoundingClientRect()` in my DoubleEndedSlider for positional accuracy. However, this was impossible to test with Jest's `jsdom` environment, which is only a virtual DOM and does not simulate component positioning. These were the results that came up when I tried to test position with `.getBoundingClientRect()` in one of my tests:
 
 ![getBoundingClientRect Method Issue](./assets/getBoundingClientRect-jsdom-issue.png)
+
+Therefore I'll have to use E2E to actually test the behavior of DoubleEndedSlider. This is a TODO for the future, possibly a stretch goal.
 
 **:heavy_check_mark: Final test coverage**:
 
