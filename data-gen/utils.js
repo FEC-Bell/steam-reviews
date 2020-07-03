@@ -34,7 +34,7 @@ exports.writeToCsv = (arr, order, writePath) => {
       reject(err);
     });
     stream.on('close', () => {
-      console.log('users.csv seed file successfully generated. Check your ./data-gen/csv-seeds directory.');
+      console.log('\tFile written to', writePath);
       resolve(true);
     });
 
