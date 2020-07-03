@@ -78,7 +78,14 @@ npm install
     ```
     The PG_PASS line is the password for accessing your PostgreSQL service. You may add other environment variables to this file, and access them throughout your code via adding the line `require('dotenv').config()` in your code. If you did not provide a password during PostgreSQL installation, delete `your_password_here` from the above line. The `.env` file has been `.gitignore`d for your convenience.
 
-4. Seed the database with `npm run seed`.
+4. Create the `steam_reviews` database in your CLI:
+    ```
+    createdb steam_reviews
+    ```
+
+    Make sure you're entering the above command as the user `postgres`. See [Troubleshooting PostgreSQL](#troubleshooting-postgresql) for more information.
+
+5. Seed the database with `npm run seed`.
     - You may check that the DB has the proper entries via `psql` CLI tool:
     ```
     psql -d steam_reviews         // connect to steam_reviews database
@@ -89,12 +96,12 @@ npm install
     \q                            // quit psql
     ```
 
-5. Ensure that all tests pass with `npm run test`.
+6. Ensure that all tests pass with `npm run test`.
 
-6. Start the server with `npm run server:dev`.
+7. Start the server with `npm run server:dev`.
     - Alternatively, start a production server with `npm run start`.
 
-7. Start the client with `npm run client:dev`.
+8. Start the client with `npm run client:dev`.
     - Alternatively, build a production-ready minified `bundle.js` with `npm run build`.
 
 ## Service Endpoints
@@ -203,7 +210,7 @@ Data shape:
 Any uncovered problems, or errors that you solved and want to share? Feel free to [open a issue](https://github.com/FEC-Bell/steam-reviews/issues/new).
 
 ### Troubleshooting PostgreSQL
-1. If using `psql -d steam_reviews` via CLI to check that the database was  seeded properly, an error
+1. If using `psql -d steam_reviews` via CLI to check that the database was seeded properly, an error
     ```
     psql: error: could not connect to server: FATAL:  role "<USERNAME>" does not exist
     ```
