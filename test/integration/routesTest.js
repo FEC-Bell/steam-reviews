@@ -3,14 +3,14 @@ const { app, server } = require('../../server/index');
 
 process.env.PORT = 6666;
 
-export const routesTest = () => describe('/api/reviews/:gameid should return the correct data shape', () => {
+export const routesTest = () => describe('/api/gamereviews/:gameid should return the correct data shape', () => {
   afterAll(async () => {
     await server.close();
   });
 
   test('Basic valid GET request', async () => {
     await request(app)
-      .get('/api/reviews/1')
+      .get('/api/gamereviews/1')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
@@ -26,13 +26,13 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
 
   test('Invalid params in GET request', async () => {
     return request(app)
-      .get('/api/reviews/101')
+      .get('/api/gamereviews/101')
       .expect(400, { error: 'Invalid game ID. Please use a number between 1 and 100.' });
   });
 
   test('querying with display search parameter works as expected', async () => {
     await request(app)
-      .get('/api/reviews/1?display=funny')
+      .get('/api/gamereviews/1?display=funny')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
@@ -47,7 +47,7 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
       });
 
     await request(app)
-      .get('/api/reviews/2?display=helpful')
+      .get('/api/gamereviews/2?display=helpful')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
@@ -62,7 +62,7 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
       });
 
     await request(app)
-      .get('/api/reviews/3?display=recent')
+      .get('/api/gamereviews/3?display=recent')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
@@ -79,7 +79,7 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
 
   test('querying with playtime search parameter works as expected', async () => {
     await request(app)
-      .get('/api/reviews/4?play_min=500')
+      .get('/api/gamereviews/4?play_min=500')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
@@ -94,7 +94,7 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
       });
 
     await request(app)
-      .get('/api/reviews/4?play_max=500')
+      .get('/api/gamereviews/4?play_max=500')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
@@ -113,7 +113,7 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
     // Although this combination of parameters should never be sent from the client,
     // they will nonetheless return a valid JSON object
     await request(app)
-      .get('/api/reviews/1?to=2020-06-01&exclude=true')
+      .get('/api/gamereviews/1?to=2020-06-01&exclude=true')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
@@ -127,7 +127,7 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
       });
 
     await request(app)
-      .get('/api/reviews/1?from=2020-04-01&to=2020-06-01')
+      .get('/api/gamereviews/1?from=2020-04-01&to=2020-06-01')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
@@ -142,7 +142,7 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
       });
 
     await request(app)
-      .get('/api/reviews/1?from=2020-04-01&to=2020-06-01&exclude=true')
+      .get('/api/gamereviews/1?from=2020-04-01&to=2020-06-01&exclude=true')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
@@ -159,7 +159,7 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
 
   test('querying with purchase type and review type works as expected', async () => {
     await request(app)
-      .get('/api/reviews/1?purchase_type=steam&review_type=positive')
+      .get('/api/gamereviews/1?purchase_type=steam&review_type=positive')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
@@ -174,7 +174,7 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
       });
 
     await request(app)
-      .get('/api/reviews/1?purchase_type=other&review_type=positive')
+      .get('/api/gamereviews/1?purchase_type=other&review_type=positive')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
@@ -189,7 +189,7 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
       });
 
     await request(app)
-      .get('/api/reviews/2?purchase_type=steam&review_type=negative')
+      .get('/api/gamereviews/2?purchase_type=steam&review_type=negative')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
@@ -204,7 +204,7 @@ export const routesTest = () => describe('/api/reviews/:gameid should return the
       });
 
     await request(app)
-      .get('/api/reviews/2?purchase_type=other&review_type=negative')
+      .get('/api/gamereviews/2?purchase_type=other&review_type=negative')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {

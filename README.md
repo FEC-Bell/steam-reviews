@@ -18,7 +18,7 @@ Reviews service for Team Bell's Steam app clone
 2. [Requirements](#requirements)
 3. [Development](#development)
 4. [Service Endpoints](#service-endpoints)
-    - [GET /api/reviews/:gameid](#get-apireviewsgameid)
+    - [GET /api/gamereviews/:gameid](#get-apireviewsgameid)
     - [Query parameters](#query-parameters-urlsearchparams-for-apireviewsgameid)
 5. [Troubleshooting](#troubleshooting)
     - [Troubleshooting PostgreSQL](#troubleshooting-postgresql)
@@ -106,7 +106,7 @@ npm install
 
 ## Service Endpoints
 
-### `GET /api/reviews/:gameid`
+### `GET /api/gamereviews/:gameid`
 
 Data shape:
 ```
@@ -161,7 +161,7 @@ Data shape:
 
 ```
 
-### Query parameters ([URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)) for `/api/reviews/:gameid`:
+### Query parameters ([URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)) for `/api/gamereviews/:gameid`:
 
 - Review type param:
     - `review_type={all || positive || negative}`
@@ -201,7 +201,7 @@ Data shape:
     - ONLY Summary will bring up the right-sided "Recently Posted" reviews sub-module
 
 - Example:
-    - `/api/reviews/:gameid?review_type=negative&from=2019-06-01&play_min=50`
+    - `/api/gamereviews/:gameid?review_type=negative&from=2019-06-01&play_min=50`
     - Get all negative reviews from last June 1st until now from people who`ve played at least 50 hours
 
 
