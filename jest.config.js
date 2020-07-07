@@ -39,7 +39,8 @@ module.exports = {
     '/node_modules/',
     '/test/',
     '/seeds/',
-    '/migrations/'
+    '/migrations/',
+    '/public/'
   ],
 
   // A list of reporter names that Jest uses when writing coverage reports
