@@ -11,7 +11,7 @@ app.use('/api', router);
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, '..', 'public')));
 
-router.get('/reviews/:gameid', async (req, res) => {
+router.get('/gamereviews/:gameid', async (req, res) => {
   let { gameid } = req.params;
   if (parseInt(gameid) <= 0 || parseInt(gameid) > 100) {
     res.status(400).json({ error: 'Invalid game ID. Please use a number between 1 and 100.' });
@@ -55,8 +55,8 @@ router.get('/reviews/:gameid', async (req, res) => {
   }
 });
 
-const server = app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server listening on port ${process.env.PORT || 3000}`);
+const server = app.listen(process.env.PORT || 3001, () => {
+  console.log(`Server listening on port ${process.env.PORT || 3001}`);
 });
 
 module.exports = { app, server };
