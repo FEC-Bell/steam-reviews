@@ -28,7 +28,9 @@ module.exports = {
     // Below: ignored by coverage report, as they're only used once
     '!**/downloadAndGetHostedUrls.js', // HostedUrls.json in /db is proof of concept
     '!**/copyToTable.js', // to populate the DB - DB's records are proof of concept
-    '!.eslintrc.js'
+    '!.eslintrc.js',
+    '!**/GlobalStyle.js', // styled-components default method -- tested by styled-components
+    '!**/DoubleEndedSlider.js' // coverage excluded temporarily UNTIL E2E is set up
   ],
 
   // The directory where Jest should output its coverage files
