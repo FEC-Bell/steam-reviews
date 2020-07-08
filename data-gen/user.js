@@ -1,13 +1,12 @@
 const faker = require('faker');
 const hostedUserUrls = require('../db/hostedUrls.json').profiles;
 
-const NUM_USERS = 750;
-
 /**
- * Generates NUM_USERS units of user data based on seed.sql users schema
- * @returns {Array}: NUM_USERS elements long
+ * Generates numUsers units of user data based on users schema
+ * @param {Number} numUsers
+ * @returns {Array}: numUsers elements long
  */
-const generateUserData = () => {
+const generateUserData = (numUsers = 750) => {
   /**
  * Rules:
  * 1. Usernames must be unique
@@ -18,7 +17,7 @@ const generateUserData = () => {
 
   // Generate usernames & ensure uniqueness before generating other data
   let userData = [];
-  for (let i = 0; i < NUM_USERS; i++) {
+  for (let i = 0; i < numUsers; i++) {
     let randomUsername;
     do {
       randomUsername = faker.internet.userName();
@@ -48,7 +47,7 @@ const generateUserData = () => {
     return userObj;
   });
 
-  console.log('Users data generated. Writing to .csv file...');
+  console.log('\n\tUsers data generated. Writing to .csv file...');
   return userData;
 };
 

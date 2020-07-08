@@ -6,7 +6,9 @@ module.exports = {
     sourceType: 'module',
     allowImportExportEverywhere: true
   },
-  rules: {},
+  rules: {
+    camelcase: 'off'
+  },
   env: {
     browser: true,
     node: true

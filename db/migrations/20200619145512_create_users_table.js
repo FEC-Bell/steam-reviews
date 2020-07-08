@@ -2,7 +2,7 @@
 exports.up = function (knex) {
   return knex.raw(
     'CREATE TABLE users(' +
-      'id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,' +
+      'id SERIAL PRIMARY KEY,' +
       'username VARCHAR(50),' +
       'profile_url TEXT,' +
       'is_online BOOLEAN,' +
@@ -18,5 +18,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTable('users');
+  return knex.schema.dropTableIfExists('users');
 };

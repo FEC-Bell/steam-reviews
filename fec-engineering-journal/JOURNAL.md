@@ -3,6 +3,27 @@
 
 Cloning the [Steam](https://store.steampowered.com/app/289070/Sid_Meiers_Civilization_VI/) app. My modules: Reviews, Game Description. This journal concerns the __Reviews__ module.
 
+## Table of Contents
+
+1. [Set up developer environment and dependencies](#pr1-set-up-developer-environment-and-dependencies)
+2. [Generate db seed data](#pr2-generate-db-seed-data)
+    - [Set up PostgreSQL](#set-up-postgresql)
+    - [Seeding](#seeding)
+        - [Write SQL seed file](#write-sql-seed-file)
+        - [Generate .CSV data](#generate-csv-data)
+        - [Pipe generated .csv files into DB](#pipe-generated-csv-files-into-db)
+3. [Ensure not all users have a badge id in generated data](#pr3-ensure-not-all-users-have-a-badge-id-in-generated-data)
+4. [Change placeholders to hosted image URLs](#pr4-change-placeholders-to-hosted-image-urls)
+5. [Automate db seed task with Knex](#pr5-automate-db-seed-task-with-knex)
+6. [Setup & write tests, add CI & coverage](#pr6-setup--write-tests-add-ci--coverage)
+7. [Complete backend: routes, db, tests](#pr7-complete-backend-routes-db-tests)
+8. [Complete Filter Menu, Filter Info portions of React client](#pr8-complete-filter-menu-filter-info-portions-of-react-client)
+    - [Create component scaffold](#create-component-scaffold)
+    - [Filter menu with dropdowns](#filter-menu-with-dropdowns)
+        - [Playtime filter menu](#heavy_check_mark-playtime-filter-menu)
+    - [Filter Tags](#filter-tags)
+    - [Set up React-Testing-Library, write tests](#set-up-react-testing-library-write-tests)
+
 ## [PR1](https://github.com/FEC-Bell/steam-reviews/pull/1): Set up developer environment and dependencies
 
 Decided on webpack-dev-server for its hot reload feature, which will come in handy when coding the frontend. Also good for its proxy server feature for redirecting requests from the frontend to the backend localhost.
@@ -167,3 +188,68 @@ The server object has a `.close` method luckily, so I just imported it into my t
 ![Test Coverage PR7](./assets/test-coverage-pr7.PNG)
 
 Biggest PR & journal entry yet! Next up: Complete frontend client.
+
+
+## [PR8](https://github.com/FEC-Bell/steam-reviews/pull/8): Complete Filter Menu, Filter Info portions of React client
+
+### Create component scaffold
+
+No issues arose.
+
+### Filter menu with dropdowns
+
+Radio input checked attribute in DOM never changes after initial render, despite the DOM's checked property updating to match state. Known issue, React engineers agreed on a workaround for testing in [this GH thread](https://github.com/patternfly/patternfly-react/issues/2879), which is to set the DOM element property according to checked state even if the attribute on the HTML tag doesn't update. I'll be keeping this in mind during DOM testing.
+
+Created modular UI components which accept props I define: radio input with label, hover tooltip, flexbox div. Used keyframes for animating (fade in, fade out) the tooltip on hover.
+
+Something good to know: if you set `position: relative` on the parent element, setting `position: absolute` on the child element and changing `top`, `left`, `bottom`, or `right` values will position the child element relative to the parent element. If `position: relative` is omitted, I believe `position: absolute` will calculate based off the nearest parent `display: block` container.
+
+##### :heavy_check_mark: Playtime filter menu
+The fifth filter menu in the filter bar below graphs is a bit of a doozy, and it looks like I'll have to implement it from scratch because no external libraries for this sort of thing are allowed: (**NOTE from present self**: or so I thought at the time, but in hindsight, the TMs said I **could have** used a library instead of implementing it myself. Big oof.)
+
+![Steam Playtime Filter Menu](./assets/playtime-filter-menu.png)
+
+Having to implement from scratch is an issue, because:
+
+1. HTML `<input type="range" />` does NOT support multiple thumbs, otherwise implementing this would be trivial.
+
+2. Implementing this without the complexities of React state & `useEffect` interactions should also be trivial. (i.e. implementing with bare-bones DOM methods, event listeners, and CSS, as was done with ButtonPocalypse)
+
+*Implentation time taken: 1 day*
+*[End Result](https://github.com/FEC-Bell/steam-reviews/blob/react-client/client/src/FilterMenu/DoubleEndedSlider.js)*
+
+After implementing the slider, here are the actual issues that arose:
+
+1. Is there a way to adapt HTML input to display 2 thumbs? That would make things so much easier. [As it turns out](https://github.com/whatwg/html/issues/1520), there IS a multiple attribute for `<input type=range>`, it's just *not supported* by all major browsers -- oof.
+--
+2. Arriving at the conclusion that I'll have to implement a fake slider that syncs to 2 invisible inputs under it, and also responds to state and async updates to state. The async state changes in my `useEffect` hooks in particular caused me some trouble, such as the `left%` and `width%` of my slider range having a state of its own, instead of taking its left & width directly from the `sliderMinMaxVals` state. I learned the value of `useEffect` hooks so much more during this exercise.
+--
+3. [Because of the way that event bubbling works](https://javascript.info/bubbling-and-capturing), Chrome was [firing an event](https://stackoverflow.com/questions/18449802/chrome-mouse-drag-and-drop-on-overlapping-divs-changes-cursor-to-not-allowed) on drag that selected ALL divs at my current dragging point. This was a problem because my div positioning was always in a place where multiple divs were on top of each other. Enabling `user-select: none` in CSS resolved this.
+--
+4. My positioning was all messed up. It's hard to explain since it was a really early problem in the slider implementation, but it was something to the effect of my slider range and slider thumbs not being constrained to their expected positions. This was fixed by constraining percent calculations (for slider range width) between 0 and max, or min and 100, depending on which value.
+--
+5. My `useEffect` hook always ensured that the last thumb clicked had the higher z-index. This became a problem when an external source (read: radio input in parent component was clicked) changed the slider values. In this case, no thumb was clicked, so the z-index for both thumbs remained at 3. Thus if the user clicked the "Over 100 hours" radio option, they would not be able to change the slider values afterward. This was solved by modifying the `useEffect` hook for `checkedOption` to call `setLastDraggedThumbId` if the user clicks "Over 100 hours".
+
+#### Filter Tags
+
+Having implemented all my state within FilterMenu, I had to lift my state up to the parent of FilterMenu AND FilterInfo, ReviewsModule, in order to complete this component.
+
+#### Set up React-Testing-Library, write tests
+
+Good testing library in my opinion. The idea of "testing user behavior instead of implementation" really does allow me to have more confidence in my tests. However, I probably should be doing this before writing all my components for this PR to facilitate TDD. Will definitely switch the order next time.
+
+Issue that arose during testing:
+
+1. I use `Element.prototype.getBoundingClientRect()` in my DoubleEndedSlider for positional accuracy. However, this was impossible to test with Jest's `jsdom` environment, which is only a virtual DOM and does not simulate component positioning. These were the results that came up when I tried to test position with `.getBoundingClientRect()` in one of my tests:
+
+![getBoundingClientRect Method Issue](./assets/getBoundingClientRect-jsdom-issue.png)
+
+Therefore I'll have to use E2E to actually test the behavior of DoubleEndedSlider. This is a TODO for the future, possibly a stretch goal.
+
+**:heavy_check_mark: Final test coverage**:
+
+![PR8 Test Coverage Report](./assets/pr8-test-coverage.png)
+
+**:heavy_check_mark: [Video of functionality thus far](https://www.youtube.com/watch?v=aTD4YtIZhLg)**
+
+With this completed, it's safe to make a PR now. I am falling into the antipattern of making big PRs due to the time difference between me and my team members (-14 to -17 hrs). Most of the time my code is blocking to future code, so to make a PR and have to wait 10-12 or often more hours for a response feels really clunky. I will try to avoid this antipattern with my future PRs.

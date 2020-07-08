@@ -20,7 +20,8 @@ module.exports = {
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
     '**/*.{js,jsx}',
-    '!**/index.js',
+    '!client/index.js',
+    '!data-gen/index.js', // Not testing this, as it's an internal tool.
     '!**/*file.js',
     '!**/*.config.js',
     '!**/knex.js',
@@ -40,7 +41,8 @@ module.exports = {
     '/node_modules/',
     '/test/',
     '/seeds/',
-    '/migrations/'
+    '/migrations/',
+    '/public/'
   ],
 
   // A list of reporter names that Jest uses when writing coverage reports
@@ -71,10 +73,10 @@ module.exports = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  // globalSetup: undefined,
+  globalSetup: './test/globalTestSetup.js',
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  // globalTeardown: undefined,
+  globalTeardown: './test/globalTestTeardown.js',
 
   // A set of global variables that need to be available in all test environments
   // globals: {},

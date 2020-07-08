@@ -2,7 +2,7 @@
 exports.up = function(knex) {
   return knex.raw(
     'CREATE TABLE reviews(' +
-      'id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,' +
+      'id SERIAL PRIMARY KEY,' +
       'id_user INTEGER REFERENCES users(id),' +
       'id_game INTEGER NOT NULL CONSTRAINT game_id_range CHECK(id_game >= 1 AND id_game <= 100),' +
       'is_recommended BOOLEAN,' +
@@ -20,5 +20,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTable('reviews');
+  return knex.schema.dropTableIfExists('reviews');
 };
