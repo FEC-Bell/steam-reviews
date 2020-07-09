@@ -71,7 +71,7 @@ npm install
 
     Further development assumes that PostgreSQL is running on its default port, 5432, and has been installed with the default settings otherwise.
 
-3. Create file named `.env` containing the following lines:
+3. Create file named `.env` in local repo root containing the following lines:
     ```
     PORT=3001
     PG_PASS=your_password_here
