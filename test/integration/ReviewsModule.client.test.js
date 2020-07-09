@@ -1,23 +1,31 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor, findByText } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import ReviewsModule from '../../client/src/ReviewsModule';
-import { gameTitle, gameRating, summaryQueryRes, funnyQueryRes } from '../fixtures/sampleData';
-
+import fetch from 'node-fetch';
 
 console.log = jest.fn(); // Suppress App console.logs
 let titles = ['Review Type', 'Purchase Type', 'Language', 'Date Range', 'Playtime', 'Display As'];
 
+jest.mock('../../client/utils.js', () => {
+  const { gameTitle, gameRating, summaryQueryRes, funnyQueryRes } = require('../fixtures/sampleData');
+
+  return {
+    getPathId: () => 1,
+    fetchAllGameReviews: () => Promise.resolve(gameRating),
+    fetchReviewInfo: () => Promise.resolve(summaryQueryRes),
+    addCommaToCount: (input) => input
+  };
+});
 
 // DoubleEndedSlider is not tested in this integration test suite for the same reasons
 // as listed in DoubleEndedSlider.component.test.js. It will be tested during E2E testing.
 describe('<Reviews Module /> - FilterMenu and FilterInfo state interactions', () => {
   // Test suites: using promise queries (findBy instead of getBy) because of the many async
   // operations within the module
+
   test('should render both components with correct displays', async () => {
     // TODO: mock with different data from different endpoint calls
-    global.fetch = jest.fn(() => Promise.resolve(gameRating));
-
     render(<ReviewsModule />);
     let titleNodes = await screen.findAllByTestId('menu-unit-wrapper');
     expect(titleNodes.length).toBe(6);
@@ -37,15 +45,6 @@ describe('<Reviews Module /> - FilterMenu and FilterInfo state interactions', ()
     expect(gameSentiment).toBeInTheDocument();
   });
 
-  test('should console.error on fetch error', async () => {
-    console.error = jest.fn();
-    global.fetch = jest.fn(() => Promise.reject('Oops'));
-
-    render(<ReviewsModule />);
-
-    await waitFor(() => expect(console.error).toHaveBeenCalledWith('Oops'));
-  });
-
   test('should reset checked option for a menu to default on tag click', async () => {
     render(<ReviewsModule />);
 
@@ -60,7 +59,7 @@ describe('<Reviews Module /> - FilterMenu and FilterInfo state interactions', ()
     expect(allLangsInput).not.toBeChecked();
 
     // Remove initial tag, assert changes match expected behavior
-    fireEvent.click(initialTag);
+    await waitFor(() => fireEvent.click(initialTag));
     expect(screen.queryByTestId('filter-tag')).toBeNull();
     expect(allLangsInput).toBeChecked();
     expect(yourLangsInput).not.toBeChecked();
@@ -71,7 +70,7 @@ describe('<Reviews Module /> - FilterMenu and FilterInfo state interactions', ()
 
     // Remove initial default tag
     let initialTag = await screen.findByTestId('filter-tag');
-    fireEvent.click(initialTag);
+    await waitFor(() => fireEvent.click(initialTag));
     expect(screen.queryByTestId('filter-tag')).toBeNull();
 
     // Get all radio inputs & click them systematically, then check if relevant tag is visible
@@ -84,17 +83,18 @@ describe('<Reviews Module /> - FilterMenu and FilterInfo state interactions', ()
       null, 'TODO: Hook up to review-graph api', 'TODO: Hook up to review-graph api',
       null, 'Playtime: Over 1 hour', 'Playtime: Over 10 hours', 'Playtime: Over 100 hours'
     ];
-    inputs.forEach((input, idx) => {
-      fireEvent.click(input);
+    for (let i = 0; i < inputs.length; i++) {
+      let input = inputs[i];
+      await waitFor(() => fireEvent.click(input));
       expect(input).toBeChecked();
-      if (expectedTagDisplayOrder[idx] === null) {
+      if (expectedTagDisplayOrder[i] === null) {
         expect(screen.queryByTestId('filter-tag')).toBeNull();
       } else {
         let tag = screen.queryByTestId('filter-tag');
         expect(tag).not.toBeNull();
-        fireEvent.click(tag);
+        await waitFor(() => fireEvent.click(tag));
       }
-    });
+    }
   });
 
   test('clicking an option in "Display As" select menu does not show tags', async () => {

@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { FlexDiv } from '../UIUXUtils';
+import { FlexDiv, EmphasisFont } from '../UIUXUtils';
 
 const TitleLabel = styled.div`
   font-size: 15px;
@@ -65,7 +66,7 @@ const FilterTags = ({ resetOption, filterOrder, activeFilters }) => {
     <FlexDiv flexWrap={'wrap'} alignItems={'center'} data-testid="tags-wrapper">
       {
         validTagsToBeDisplayed.length ?
-          <TitleLabel className='emphasis-font'>Filters</TitleLabel> :
+          <TitleLabel><EmphasisFont>Filters</EmphasisFont></TitleLabel> :
           ''
       }
       {
@@ -81,6 +82,18 @@ const FilterTags = ({ resetOption, filterOrder, activeFilters }) => {
       }
     </FlexDiv>
   );
+};
+
+FilterTags.propTypes = {
+  resetOption: PropTypes.func.isRequired,
+  filterOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
+  activeFilters: PropTypes.object.isRequired
+};
+
+FilterTags.defaultProps = {
+  resetOption: () => {},
+  filterOrder: [],
+  activeFilters: {}
 };
 
 export default FilterTags;

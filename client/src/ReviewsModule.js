@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { GlobalStyle } from './GlobalStyle';
+import { fetchAllGameReviews, fetchReviewInfo } from '../utils';
 import FilterMenu from './FilterMenu/FilterMenu';
 import FilterInfo from './FilterInfo/FilterInfo';
 
@@ -9,26 +11,26 @@ import { gameTitle, gameRating, summaryQueryRes, funnyQueryRes } from '../../tes
  * ROOT COMPONENT
  * Stretch goal: Steam website cookies for storing user-specific filters (observed on site)
  */
-const ReviewsModule = () => {
+const ReviewsModule = ({ gameid }) => {
   /**
  * STATIC VARIABLES
  */
-  const filterMenuOrder = useRef(['Review Type', 'Purchase Type', 'Language', 'Date Range', 'Playtime', 'Display As']);
-  const filterMenuOpts = useRef({
+  const filterMenuOrder = ['Review Type', 'Purchase Type', 'Language', 'Date Range', 'Playtime', 'Display As'];
+  const filterMenuOpts = {
     'Review Type': ['All', 'Positive', 'Negative'],
     'Purchase Type': ['All', 'Steam Purchasers', 'Other'],
     'Language': ['All Languages', 'Your Languages'],
     'Date Range': ['Lifetime', 'Only Specific Range (Select on graph above)', 'Exclude Specific Range (Select on graph above)'],
     'Playtime': ['No Minimum', 'Over 1 hour', 'Over 10 hours', 'Over 100 hours'],
     'Display As': ['Summary', 'Most Helpful', 'Recent', 'Funny']
-  });
-  const hiddenFilters = useRef({
+  };
+  const hiddenFilters = {
     'Review Type': 'All',
     'Purchase Type': 'All',
     'Language': 'All Languages',
     'Date Range': 'Lifetime',
     'Playtime': 'No Minimum',
-  });
+  };
 
   /**
    * STATE
@@ -61,15 +63,18 @@ const ReviewsModule = () => {
   });
 
   // Checked options: values used by controller inputs in FilterMenu
-  const defaultCheckedOptions = useRef({
+  const defaultCheckedOptions = {
     'Review Type': 'All',
     'Purchase Type': 'All',
     'Language': 'Your Languages',
     'Date Range': 'Lifetime',
     'Playtime': 'No Minimum',
     'Display As': 'summary'
-  });
-  const [checkedOptions, setCheckedOptions] = useState(defaultCheckedOptions.current);
+  };
+  const [checkedOptions, setCheckedOptions] = useState(defaultCheckedOptions);
+
+  const [filterReviews, setFilterReviews] = useState([]);
+  const [recentReviews, setRecentReviews] = useState([]);
 
   const isInitialMount = useRef(true);
 
@@ -87,9 +92,9 @@ const ReviewsModule = () => {
    * TODO: replace with data from this service's endpoint (after PR merge)
    */
   useEffect(() => {
-    // Fetch to review-graph endpoint
-    fetch('/')
-      .then(() => {
+    // Fetch to review-graph endpoint for review count, percent, sentiment
+    fetchAllGameReviews(gameid)
+      .then(gameRating => {
         let { summary, total, positive, negative } = gameRating;
         setGameSentiment(summary);
         setFilterMenuCounts(prevCounts => ({
@@ -100,30 +105,34 @@ const ReviewsModule = () => {
             'Negative': negative
           }
         }));
-        // Fetch to my endpoint for initial review data
-        return fetch('/');
       })
-      .then(() => {
+      // Keep initial state on fetch error
+      .catch(e => console.error(e));
+
+    // Fetch to reviews endpoint for other review data
+    fetchReviewInfo(gameid)
+      .then(result => {
         // Due to different datasets between two services, purchase type total will be different than review
         // type total, despite them being the same on Steam.
-        let totalPurchased = summaryQueryRes.steamPurchasedCount + summaryQueryRes.otherPurchasedCount;
-        setReviewCount(summaryQueryRes.data.length);
+        let totalPurchased = result.steamPurchasedCount + result.otherPurchasedCount;
+        setReviewCount(result.data.length);
         setFilterMenuCounts(prevCounts => ({
           ...prevCounts,
           'Purchase Type': {
             'All': totalPurchased,
-            'Steam Purchasers': summaryQueryRes.steamPurchasedCount,
-            'Other': summaryQueryRes.otherPurchasedCount
+            'Steam Purchasers': result.steamPurchasedCount,
+            'Other': result.otherPurchasedCount
           },
           'Language': {
             'All Languages': totalPurchased,
             'Your Languages': totalPurchased
           }
         }));
+        setFilterReviews(result.data);
+        result.recent && setRecentReviews(result.recent);
       })
-      .catch(err => {
-        console.error(err);
-      });
+      // Keep initial state on error
+      .catch(err => console.error(err));
   }, []);
 
   // Make a new GET request with updated params on active filter change
@@ -132,7 +141,12 @@ const ReviewsModule = () => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
-      console.log('TODO: GET request with updated params: ReviewsModule.js line 135');
+      fetchReviewInfo(gameid)
+        .then(result => {
+          setFilterReviews(result.data);
+          result.recent && setRecentReviews(result.recent);
+        })
+        .catch(err => console.error(err));
     }
   }, [activeFilters]);
 
@@ -153,7 +167,7 @@ const ReviewsModule = () => {
    * @param {String} title
    */
   const resetOption = (title) => {
-    updateCheckedOption(title, title === 'Language' ? 'All Languages' : defaultCheckedOptions.current[title]);
+    updateCheckedOption(title, title === 'Language' ? 'All Languages' : defaultCheckedOptions[title]);
   };
 
   /**
@@ -167,7 +181,7 @@ const ReviewsModule = () => {
       return;
     }
 
-    if (hiddenFilters.current[title] === inputVal || (typeof inputVal === 'object' && inputVal.min === 0 && inputVal.max === 100)) {
+    if (hiddenFilters[title] === inputVal || (typeof inputVal === 'object' && inputVal.min === 0 && inputVal.max === 100)) {
       setActiveFilters(prevFilters => ({
         ...prevFilters,
         [title]: null
@@ -195,13 +209,13 @@ const ReviewsModule = () => {
       <FilterMenu
         checkedOptions={checkedOptions}
         updateCheckedOption={updateCheckedOption}
-        filterOrder={filterMenuOrder.current}
-        filterMenuOpts={filterMenuOpts.current}
+        filterOrder={filterMenuOrder}
+        filterMenuOpts={filterMenuOpts}
         filterMenuCounts={filterMenuCounts}
         handleFilterChange={handleActiveFilterChange}
       />
       <FilterInfo
-        filterOrder={filterMenuOrder.current}
+        filterOrder={filterMenuOrder}
         activeFilters={activeFilters}
         gameSentiment={gameSentiment}
         reviewCount={reviewCount}
@@ -209,6 +223,14 @@ const ReviewsModule = () => {
       />
     </React.Fragment>
   );
+};
+
+ReviewsModule.propTypes = {
+  gameid: PropTypes.number.isRequired
+};
+
+ReviewsModule.defaultProps = {
+  gameid: 1
 };
 
 export default ReviewsModule;

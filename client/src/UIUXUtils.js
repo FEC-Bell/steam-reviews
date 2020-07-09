@@ -15,6 +15,10 @@ export const BoldText = styled.span`
   font-weight: ${props => props.weight ? props.weight : 'bold'};
 `;
 
+export const EmphasisFont = styled.span`
+  font-family: 'Roboto', sans-serif;
+`;
+
 export const NoSelect = styled.div`
   -webkit-touch-callout: none;
   -webkit-user-select: none;

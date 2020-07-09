@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import FilterTags from './FilterTags';
-import { BoldText } from '../UIUXUtils';
+import { BoldText, EmphasisFont } from '../UIUXUtils';
 
 const FilterInfoContainer = styled.div`
   border-bottom: 1px solid #000;
@@ -30,14 +31,32 @@ const FilterInfo = ({ resetOption, filterOrder, activeFilters, gameSentiment, re
         activeFilters={activeFilters}
         resetOption={resetOption}
       />
-      <FilterScoreInfo className='emphasis-font'>
-        Showing&nbsp;
-        <BoldText weight={900}>{reviewCount}</BoldText>
-        &nbsp;reviews that match the filters above
-        ( <RatingText context={gameSentiment.split(' ').slice(-1)[0]}>{gameSentiment}</RatingText> )
+      <FilterScoreInfo>
+        <EmphasisFont>
+          Showing&nbsp;
+          <BoldText weight={900}>{reviewCount}</BoldText>
+          &nbsp;reviews that match the filters above
+          ( <RatingText context={gameSentiment.split(' ').slice(-1)[0]}>{gameSentiment}</RatingText> )
+        </EmphasisFont>
       </FilterScoreInfo>
     </FilterInfoContainer>
   );
+};
+
+FilterInfo.propTypes = {
+  resetOption: PropTypes.func.isRequired,
+  filterOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
+  activeFilters: PropTypes.object.isRequired,
+  gameSentiment: PropTypes.string.isRequired,
+  reviewCount: PropTypes.number.isRequired
+};
+
+FilterInfo.defaultProps = {
+  resetOption: () => {},
+  filterOrder: [],
+  activeFilters: {},
+  gameSentiment: 'Positive',
+  reviewCount: 0
 };
 
 export default FilterInfo;

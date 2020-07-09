@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 
 /**
@@ -16,8 +17,8 @@ const fadeOut = keyframes`
 
 const TooltipDiv = styled.div`
   position: absolute;
-  bottom: ${props => props.y ? `${props.y}px` : '20px'};
-  left: ${props => props.x ? `${props.x}px` : '5px'};
+  bottom: ${props => `${props.y}px`};
+  left: ${props =>`${props.x}px`};
   padding: 5px;
   box-sizing: border-box;
   width: 300px;
@@ -73,6 +74,18 @@ const InfoTooltip = ({ message, xOff, yOff }) => {
       />
     </RelativeParentContainer>
   );
+};
+
+InfoTooltip.propTypes = {
+  message: PropTypes.string.isRequired,
+  xOff: PropTypes.number,
+  yOff: PropTypes.number
+};
+
+InfoTooltip.defaultProps = {
+  message: '',
+  xOff: 5,
+  yOff: 20
 };
 
 export default InfoTooltip;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { BoldText, NoSelect } from '../UIUXUtils';
 
 /**
@@ -11,7 +12,7 @@ const RangeInput = styled.input`
   top: 0;
   left: 0;
   -webkit-appearance: none;
-  opacity: 0;
+  visibility: hidden;
   :focus {
     outline: none;
   }
@@ -326,7 +327,7 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
 
       <SliderContainer id="slider">
         {/*
-          Uncontrolled, hidden (opacity: 0) inputs, for communication with server only.
+          Uncontrolled, hidden (visibility: hidden) inputs, for communication with server only.
           Not meant to be part of UI, though it IS rendered.
          */}
         <RangeInput
@@ -387,6 +388,18 @@ const DoubleEndedSlider = ({ checkedOption, updateOption, handleFilterChange }) 
       </SliderContainer>
     </React.Fragment>
   );
+};
+
+DoubleEndedSlider.propTypes = {
+  checkedOption: PropTypes.oneOf(['', 'No Minimum', 'Over 1 hour', 'Over 10 hours', 'Over 100 hours']).isRequired,
+  updateOption: PropTypes.func.isRequired,
+  handleFilterChange: PropTypes.func.isRequired
+};
+
+DoubleEndedSlider.defaultProps = {
+  checkedOption: 'No Minimum',
+  updateOption: () => {},
+  handleFilterChange: () => {}
 };
 
 export default DoubleEndedSlider;

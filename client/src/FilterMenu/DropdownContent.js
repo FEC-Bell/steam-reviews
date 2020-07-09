@@ -103,7 +103,7 @@ const DropdownContent = ({ checkedOption, updateCheckedOption, title, options, h
    * STATIC VARIABLES
    */
   const isInitialMount = useRef(true);
-  const tooltipMessages = useRef({
+  const tooltipMessages = {
     'Purchase Type': {
       'Steam Purchasers': 'These are reviews written by customers that purchased the game directly from Steam.',
       'Other': 'These are reviews written by customers that did not purchase the game on Steam. (This may include legitimate sources such as other digital stores, retail stores, testing purposes, or press review purposes. Or, from inappropriate sources such as copies given in exchange for reviews.)'
@@ -111,7 +111,7 @@ const DropdownContent = ({ checkedOption, updateCheckedOption, title, options, h
     'Language': {
       'Your Languages': 'Your preferences are currently set to show content authored in these languages: English.\n\nClick customize below to modify your preferences.',
     }
-  });
+  };
 
   /**
    * HANDLERS & EVENT HOOKS
@@ -167,7 +167,7 @@ const DropdownContent = ({ checkedOption, updateCheckedOption, title, options, h
             checkedOption={checkedOption}
             count={!Array.isArray(options) ? options[option] : null}
             handleChange={updateCheckedOption}
-            tooltipMessage={tooltipMessages.current[title] ? tooltipMessages.current[title][option] : null}
+            tooltipMessage={tooltipMessages[title] ? tooltipMessages[title][option] : null}
           />
         )
       }
