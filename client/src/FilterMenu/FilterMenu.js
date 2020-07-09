@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import FilterMenuUnit from './FilterMenuUnit';
 
@@ -11,6 +12,7 @@ const StyledMenu = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  position: relative;
 `;
 
 /**
@@ -36,6 +38,24 @@ const FilterMenu = ({ checkedOptions, updateCheckedOption, filterOrder, filterMe
       }
     </StyledMenu>
   );
+};
+
+FilterMenu.propTypes = {
+  checkedOptions: PropTypes.object.isRequired,
+  updateCheckedOption: PropTypes.func.isRequired,
+  filterOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
+  filterMenuOpts: PropTypes.object.isRequired,
+  filterMenuCounts: PropTypes.object.isRequired,
+  handleFilterChange: PropTypes.func.isRequired
+};
+
+FilterMenu.defaultProps = {
+  checkedOptions: {},
+  updateCheckedOption: () => {},
+  filterOrder: [],
+  filterMenuOpts: {},
+  filterMenuCounts: {},
+  handleFilterChange: () => {}
 };
 
 export default FilterMenu;

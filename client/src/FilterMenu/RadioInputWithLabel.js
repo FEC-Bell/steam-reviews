@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FlexDiv } from '../UIUXUtils';
 import InfoTooltip from './InfoTooltip';
@@ -44,6 +45,21 @@ const RadioInputWithLabel = ({ title, option, checkedOption, count, handleChange
       }
     </FlexDiv>
   );
+};
+
+RadioInputWithLabel.propTypes = {
+  title: PropTypes.string.isRequired,
+  option: PropTypes.string.isRequired,
+  checkedOption: PropTypes.string,
+  count: PropTypes.number,
+  handleChange: PropTypes.func.isRequired,
+  tooltipMessage: PropTypes.string
+};
+
+RadioInputWithLabel.defaultProps = {
+  title: 'Review Type',
+  option: '',
+  handleChange: () => {}
 };
 
 export default RadioInputWithLabel;

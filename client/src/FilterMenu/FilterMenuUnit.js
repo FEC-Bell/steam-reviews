@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FlexDiv } from '../UIUXUtils';
 import DropdownContent from './DropdownContent';
+import FilterMenu from './FilterMenu';
 
 /**
  * STYLED COMPONENTS
@@ -97,21 +99,35 @@ const FilterMenuUnit = ({ checkedOption, updateCheckedOption, title, options, ha
         (
           <FlexDiv flexWrap='wrap' flexDirection='column'>
             <TitleWithArrow>{title}</TitleWithArrow>
-            {
-              <Dropdown id={`${title.toLowerCase().split(' ').join('-')}-dropdown`}>
-                <DropdownContent
-                  title={title}
-                  options={options}
-                  checkedOption={checkedOption}
-                  updateCheckedOption={updateCheckedOption}
-                  handleFilterChange={handleFilterChange}
-                />
-              </Dropdown>
-            }
+            <Dropdown id={`${title.toLowerCase().split(' ').join('-')}-dropdown`}>
+              <DropdownContent
+                title={title}
+                options={options}
+                checkedOption={checkedOption}
+                updateCheckedOption={updateCheckedOption}
+                handleFilterChange={handleFilterChange}
+              />
+            </Dropdown>
           </FlexDiv>
         )
     }
   </MenuUnit>
 );
+
+FilterMenuUnit.propTypes = {
+  checkedOption: PropTypes.string.isRequired,
+  updateCheckedOption: PropTypes.func.isRequired,
+  title: PropTypes.oneOf(['Review Type', 'Purchase Type', 'Language', 'Date Range', 'Playtime', 'Display As']).isRequired,
+  options: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
+  handleFilterChange: PropTypes.func.isRequired
+};
+
+FilterMenuUnit.defaultProps = {
+  checkedOption: '',
+  updateCheckedOption: () => {},
+  title: 'Review Type',
+  options: {},
+  handleFilterChange: () => {}
+};
 
 export default FilterMenuUnit;
