@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import ReviewsModule from '../../client/src/ReviewsModule';
-import fetch from 'node-fetch';
 
 console.log = jest.fn(); // Suppress App console.logs
 let titles = ['Review Type', 'Purchase Type', 'Language', 'Date Range', 'Playtime', 'Display As'];

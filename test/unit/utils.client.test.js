@@ -37,8 +37,6 @@ describe('addCommaToCount client util', () => {
 
     expect(() => fetchAllGameReviews(0)).toThrow();
     expect(() => fetchAllGameReviews(101)).toThrow();
-
-    console.log(global.fetch.mock.calls);
   });
 
   test('fetchReviewInfo calls the correct endpoint with passed in game id', async () => {
