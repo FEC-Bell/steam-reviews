@@ -45,6 +45,7 @@ npm install
     git clone https://github.com/FEC-Bell/steam-reviews.git`
     cd steam-reviews
     npm install
+    npx install-peerdeps knex
     ```
 
 2. **PostgreSQL v12** must be set up before continuing:
