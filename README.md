@@ -45,6 +45,7 @@ npm install
     git clone https://github.com/FEC-Bell/steam-reviews.git`
     cd steam-reviews
     npm install
+    npx install-peerdeps knex
     ```
 
 2. **PostgreSQL v12** must be set up before continuing:
@@ -56,17 +57,18 @@ npm install
 
     [Verify](https://linuxize.com/post/how-to-check-postgresql-version/) that PostgreSQL is version 12.
 
-    Start the PostgreSQL service:
+    PostgreSQL service commands for Windows WSL or Linux:
     ```
     sudo service postgresql start
-    ```
-    Stop the service:
-    ```
     sudo service postgresql stop
-    ```
-    Check the service status:
-    ```
     sudo service postgresql status
+    ```
+
+    PostgreSQL service commands for Mac:
+    ```
+    brew services postgresql start
+    brew services postgresql stop
+    brew services
     ```
 
     Further development assumes that PostgreSQL is running on its default port, 5432, and has been installed with the default settings otherwise.
@@ -75,17 +77,31 @@ npm install
     ```
     PORT=3001
     PG_PASS=your_password_here
+    PG_USER=your_username_here
     ```
     The PG_PASS line is the password for accessing your PostgreSQL service. You may add other environment variables to this file, and access them throughout your code via adding the line `require('dotenv').config()` in your code. If you did not provide a password during PostgreSQL installation, delete `your_password_here` from the above line. The `.env` file has been `.gitignore`d for your convenience.
+
+    Your username for accessing PG_USER on Windows WSL or Linux should be `postgres`. On Mac, it should be your username as displayed in zsh:  `your_username@MacBook-Pro ~ %`
 
 4. Create the `steam_reviews` database in your CLI:
     ```
     createdb steam_reviews
     ```
 
-    Make sure you're entering the above command as the user `postgres`. See [Troubleshooting PostgreSQL](#troubleshooting-postgresql) for more information.
+    Or from inside psql:
+    ```
+    CREATE DATABASE steam_reviews;
+    ```
+
+    Make sure you're entering the above command as the user `postgres` (or whatever your username is on Mac). See [Troubleshooting PostgreSQL](#troubleshooting-postgresql) for more information.
 
 5. Seed the database with `npm run seed`.
+    - **If using Mac**: instead of `npm run seed`, run:
+    ```
+    sudo npm i -g knex
+    npm run seed:internal
+    ```
+
     - You may check that the DB has the proper entries via `psql` CLI tool:
     ```
     psql -d steam_reviews         // connect to steam_reviews database

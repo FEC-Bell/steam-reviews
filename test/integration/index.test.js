@@ -1,4 +1,5 @@
 process.env.NODE_ENV = 'test';
+require('dotenv').config();
 const db = require('../../db/knex');
 const { dbTest } = require('./dbTest');
 const { routesTest } = require('./routesTest');

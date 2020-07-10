@@ -4,8 +4,7 @@ import { GlobalStyle } from './GlobalStyle';
 import { fetchAllGameReviews, fetchReviewInfo } from '../utils';
 import FilterMenu from './FilterMenu/FilterMenu';
 import FilterInfo from './FilterInfo/FilterInfo';
-
-import { gameTitle, gameRating, summaryQueryRes, funnyQueryRes } from '../../test/fixtures/sampleData';
+import Reviews from './Reviews/Reviews';
 
 /**
  * ROOT COMPONENT
@@ -73,7 +72,7 @@ const ReviewsModule = ({ gameid }) => {
   };
   const [checkedOptions, setCheckedOptions] = useState(defaultCheckedOptions);
 
-  const [filterReviews, setFilterReviews] = useState([]);
+  const [mainReviews, setMainReviews] = useState([]);
   const [recentReviews, setRecentReviews] = useState([]);
 
   const isInitialMount = useRef(true);
@@ -128,7 +127,7 @@ const ReviewsModule = ({ gameid }) => {
             'Your Languages': totalPurchased
           }
         }));
-        setFilterReviews(result.data);
+        setMainReviews(result.data);
         result.recent && setRecentReviews(result.recent);
       })
       // Keep initial state on error
@@ -143,7 +142,7 @@ const ReviewsModule = ({ gameid }) => {
     } else {
       fetchReviewInfo(gameid)
         .then(result => {
-          setFilterReviews(result.data);
+          setMainReviews(result.data);
           result.recent && setRecentReviews(result.recent);
         })
         .catch(err => console.error(err));
@@ -220,6 +219,10 @@ const ReviewsModule = ({ gameid }) => {
         gameSentiment={gameSentiment}
         reviewCount={reviewCount}
         resetOption={resetOption}
+      />
+      <Reviews
+        mainReviews={mainReviews}
+        recentReviews={recentReviews}
       />
     </React.Fragment>
   );

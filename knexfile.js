@@ -5,7 +5,7 @@ module.exports = {
     client: 'pg',
     connection: {
       host: '127.0.0.1',
-      user: 'postgres',
+      user: process.env.PG_USER,
       password: process.env.PG_PASS || '',
       database: 'steam_reviews_test'
     },
@@ -20,7 +20,7 @@ module.exports = {
     client: 'pg',
     connection: {
       host: '127.0.0.1',
-      user: 'postgres',
+      user: process.env.PG_USER,
       password: process.env.PG_PASS,
       database: 'steam_reviews'
     },
