@@ -230,5 +230,5 @@ Any uncovered problems, or errors that you solved and want to share? Feel free t
     ```
     psql: error: could not connect to server: FATAL:  role "<USERNAME>" does not exist
     ```
-    might appear. If this happens, use `sudo su postgres` to switch to the postgres account, and run `psql -d steam_reviews` again. Typing `sudo su YOUR_USERNAME` will switch you back to your user account.
+    might appear. If this happens, use `sudo su postgres` to switch to the postgres account, and run `psql -d steam_reviews` again. If user 'postgres' does not exist in your system, you may create this user *with superuser permissions* by typing `CREATE USER postgres SUPERUSER;` in psql CLI. See [this post](https://stackoverflow.com/questions/15301826/psql-fatal-role-postgres-does-not-exist) for more details. Typing `sudo su YOUR_USERNAME` will switch you back to your user account.
 
