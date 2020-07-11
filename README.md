@@ -66,8 +66,8 @@ npm install
 
     PostgreSQL service commands for Mac:
     ```
-    brew services postgresql start
-    brew services postgresql stop
+    brew services start postgresql
+    brew services stop postgresql
     brew services
     ```
 
