@@ -20,19 +20,19 @@ const badges = [
     id: 1,
     title: 'Badge One',
     xp: 100,
-    badge_url: 'https://picsum.photos/100'
+    badge_url: 'https://test.com/image.jpg'
   },
   {
     id: 2,
     title: 'Badge Two',
     xp: 200,
-    badge_url: 'https://picsum.photos/100'
+    badge_url: 'https://test.com/image.jpg'
   },
   {
     id: 3,
     title: 'Badge Three',
     xp: 300,
-    badge_url: 'https://picsum.photos/100'
+    badge_url: 'https://test.com/image.jpg'
   }
 ];
 
@@ -40,7 +40,7 @@ const users = [
   {
     id: 1,
     username: 'User1',
-    profile_url: 'https://picsum.photos/100',
+    profile_url: 'https://test.com/image.jpg',
     is_online: true,
     num_products: 100,
     num_reviews: 10,
@@ -54,7 +54,7 @@ const users = [
   {
     id: 2,
     username: 'User2',
-    profile_url: 'https://picsum.photos/100',
+    profile_url: 'https://test.com/image.jpg',
     is_online: false,
     num_products: 200,
     num_reviews: 20,
@@ -68,7 +68,7 @@ const users = [
   {
     id: 3,
     username: 'User3',
-    profile_url: 'https://picsum.photos/100',
+    profile_url: 'https://test.com/image.jpg',
     is_online: true,
     num_products: 300,
     num_reviews: 30,
@@ -82,7 +82,7 @@ const users = [
   {
     id: 4,
     username: 'User4',
-    profile_url: 'https://picsum.photos/100',
+    profile_url: 'https://test.com/image.jpg',
     is_online: false,
     num_products: 400,
     num_reviews: 40,
@@ -96,7 +96,7 @@ const users = [
   {
     id: 5,
     username: 'User5',
-    profile_url: 'https://picsum.photos/100',
+    profile_url: 'https://test.com/image.jpg',
     is_online: true,
     num_products: 500,
     num_reviews: 50,
@@ -110,7 +110,7 @@ const users = [
   {
     id: 6,
     username: 'User6',
-    profile_url: 'https://picsum.photos/100',
+    profile_url: 'https://test.com/image.jpg',
     is_online: true,
     num_products: 600,
     num_reviews: 60,
@@ -130,8 +130,8 @@ const reviews = [
     user: users[0],
     id_game: 1,
     is_recommended: true,
-    hours_on_record: 277.5,
-    hours_at_review_time: 122.3,
+    hours_on_record: '277.5',
+    hours_at_review_time: '122.3',
     purchase_type: 'direct',
     date_posted: new Date().toISOString(),
     received_free: false,
@@ -146,8 +146,8 @@ const reviews = [
     user: users[1],
     id_game: 1,
     is_recommended: false,
-    hours_on_record: 50.5,
-    hours_at_review_time: 9.5,
+    hours_on_record: '50.5',
+    hours_at_review_time: '9.5',
     purchase_type: 'key',
     date_posted: new Date().toISOString(),
     received_free: true,
@@ -162,8 +162,8 @@ const reviews = [
     user: users[2],
     id_game: 1,
     is_recommended: false,
-    hours_on_record: 1503.6,
-    hours_at_review_time: 1111.1,
+    hours_on_record: '1503.6',
+    hours_at_review_time: '1111.1',
     purchase_type: 'key',
     date_posted: new Date().toISOString(),
     received_free: false,
@@ -178,8 +178,8 @@ const reviews = [
     user: users[3],
     id_game: 1,
     is_recommended: true,
-    hours_on_record: 888.8,
-    hours_at_review_time: 777.7,
+    hours_on_record: '888.8',
+    hours_at_review_time: '777.7',
     purchase_type: 'key',
     date_posted: new Date().toISOString(),
     received_free: false,
@@ -194,8 +194,8 @@ const reviews = [
     user: users[4],
     id_game: 1,
     is_recommended: true,
-    hours_on_record: 8.8,
-    hours_at_review_time: 7.7,
+    hours_on_record: '8.8',
+    hours_at_review_time: '7.7',
     purchase_type: 'direct',
     date_posted: new Date().toISOString(),
     received_free: false,
@@ -210,8 +210,8 @@ const reviews = [
     user: users[5],
     id_game: 1,
     is_recommended: true,
-    hours_on_record: 999.8,
-    hours_at_review_time: 666.6,
+    hours_on_record: '999.8',
+    hours_at_review_time: '666.6',
     purchase_type: 'direct',
     date_posted: new Date().toISOString(),
     received_free: false,

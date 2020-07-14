@@ -1,25 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import MainReview from './MainReview';
+import { MainReviewsDiv, ReviewTypeInfo } from './Reviews.styles';
 
-const MainReviewsDiv = styled.div`
-  width: 616px;
-`;
-
-const MainReview = styled.div`
-  background-color: rgba(0, 0, 0, 0.2);
-  margin-bottom: 26px;
-  background-image: url(https://steamstore-a.akamaihd.net/public/images/v6/maincol_gradient_rule.png);
-  background-repeat: no-repeat;
-  background-position: top left;
-`;
-
-const MainReviews = ({ reviews }) => {
+/**
+ * A default prop is specified above so that default reviews are not recreated with every
+ * function call, causing child components to rerender every time a parent rerenders, even if child
+ * components have not changed.
+ */
+const MainReviews = ({ reviews = [{}]}) => {
   return (
     <MainReviewsDiv>
+      <ReviewTypeInfo>
+        Most helpful reviews
+        <span> In the past 30 days</span>
+      </ReviewTypeInfo>
       {
         reviews.map((review, idx) => (
-          <MainReview key={idx}>{review.user.username}</MainReview>
+          <MainReview
+            key={idx}
+            review={review}
+          />
         ))
       }
     </MainReviewsDiv>
@@ -28,10 +29,6 @@ const MainReviews = ({ reviews }) => {
 
 MainReviews.propTypes = {
   reviews: PropTypes.array.isRequired
-};
-
-MainReviews.defaultProps = {
-  reviews: []
 };
 
 export default MainReviews;

@@ -1,20 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import MainReviews from './MainReviews';
 import RecentReviews from './RecentReviews';
-
-const ReviewsContainer = styled.div`
-  min-height: 1000px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-`;
+import { ReviewsContainer } from './Reviews.styles';
 
 const Reviews = ({ mainReviews, recentReviews }) => {
   return (
-    <ReviewsContainer>
+    <ReviewsContainer
+      flexDirection='row'
+      flexWrap='nowrap'
+      justifyContent='space-between'
+    >
       <MainReviews
         reviews={mainReviews}
       />
@@ -27,11 +23,11 @@ const Reviews = ({ mainReviews, recentReviews }) => {
 
 Reviews.propTypes = {
   mainReviews: PropTypes.arrayOf(PropTypes.object).isRequired,
-  recentReviews: PropTypes.array.isRequired
+  recentReviews: PropTypes.array
 };
 
 Reviews.defaultProps = {
-  mainReviews: [],
+  mainReviews: [{}], // If prop error, pass 1 empty review so that reviews aren't empty (rendered via MainReview.defaultProps)
   recentReviews: []
 };
 

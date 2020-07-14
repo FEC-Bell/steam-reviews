@@ -13,7 +13,8 @@ jest.mock('../../client/utils.js', () => {
     getPathId: () => 1,
     fetchAllGameReviews: () => Promise.resolve(gameRating),
     fetchReviewInfo: () => Promise.resolve(summaryQueryRes),
-    addCommaToCount: (input) => input
+    addCommaToCount: (input) => input,
+    getHumanReadableFromISO: (ISOString) => ISOString
   };
 });
 

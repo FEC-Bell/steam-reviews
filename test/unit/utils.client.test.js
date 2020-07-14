@@ -1,4 +1,4 @@
-import { addCommaToCount, getPathId, fetchAllGameReviews, fetchReviewInfo } from '../../client/utils';
+import { addCommaToCount, getPathId, getHumanReadableFromISO, fetchAllGameReviews, fetchReviewInfo } from '../../client/utils';
 
 global.fetch = jest.fn().mockImplementation(() => Promise.resolve({
   ok: true,
@@ -29,6 +29,34 @@ describe('addCommaToCount client util', () => {
 
     global.window.location.pathname = '';
     expect(getPathId()).toBe(1);
+  });
+
+  test('getHumanReadableFromISO should return a human readable date string', () => {
+    let years = new Array(10).fill(0).map((_, idx) => (idx + 2010).toString());
+    let months = new Array(12).fill(0).map((_, idx) => (idx + 1).toString().padStart(2, '0'));
+    let monthStrs = {
+      '01': 'January',
+      '02': 'February',
+      '03': 'March',
+      '04': 'April',
+      '05': 'May',
+      '06': 'June',
+      '07': 'July',
+      '08': 'August',
+      '09': 'September',
+      '10': 'October',
+      '11': 'November',
+      '12': 'December'
+    };
+
+    for (let i = 1; i <= 28; i++) {
+      for (let j = 0; j < years.length; j++) {
+        for (let k = 0; k < months.length; k++) {
+          let ISOStr = `${years[j]}-${months[k]}-${String(i).padStart(2, '0')}T00:00:00Z`;
+          expect(getHumanReadableFromISO(ISOStr)).toBe(`${parseInt(i)} ${monthStrs[months[k]]}, ${years[j]}`);
+        }
+      }
+    }
   });
 
   test('fetchAllGameReviews calls the correct endpoint with passed in game id', async () => {

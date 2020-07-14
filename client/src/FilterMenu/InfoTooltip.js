@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 
@@ -21,71 +21,64 @@ const TooltipDiv = styled.div`
   left: ${props =>`${props.x}px`};
   padding: 5px;
   box-sizing: border-box;
-  width: 300px;
+  max-width: 300px;
+  width: ${props => props.width};
   background: #c2c2c2;
   color: #3d3d3f;
   box-shadow: 0 0 4px 0 #000;
   border-radius: 4px;
-  white-space: pre-wrap;
-  white-space: -moz-pre-wrap;
-  white-space: -pre-wrap;
-  white-space: -o-pre-wrap;
+  white-space: ${props => props.wrap === 'true' ? 'pre-wrap' : 'nowrap'};
   word-wrap: break-word;
   font-size: 11.5px;
   line-height: 12px;
   display: inline-block;
+  z-index: 300;
   visibility: ${props => props.open ? 'visible' : 'hidden'};
   animation: ${props => props.open ? fadeIn : fadeOut} 0.1s linear;
   transition: visibility 0.1s linear;
 `;
 
-const StyledImg = styled.img`
-  cursor: default;
-`;
-
 const RelativeParentContainer = styled.div`
-  display: flex;
-  align-items: center;
   position: relative;
-  height: 12px;
-  padding-left: 5px;
+  font-family: Arial, Helvetica, sans-serif;
 `;
 
 /**
  * MAIN COMPONENT: Modular hover tooltip
  */
-const InfoTooltip = ({ message, xOff, yOff }) => {
+const InfoTooltip = ({ message = '', xOff = 5, yOff = 20, children = <div></div>, width = '300px', wrap = 'true' }) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
   return (
-    <RelativeParentContainer>
-      <TooltipDiv
-        x={xOff}
-        y={yOff}
-        open={tooltipOpen}
-      >
-        {message}
-      </TooltipDiv>
-      <StyledImg
+    <React.Fragment>
+      <RelativeParentContainer>
+        <TooltipDiv
+          x={xOff}
+          y={yOff}
+          open={tooltipOpen}
+          width={width}
+          wrap={wrap}
+        >
+          {message}
+        </TooltipDiv>
+      </RelativeParentContainer>
+      <div
         onMouseEnter={() => setTooltipOpen(true)}
-        onMouseOut={() => setTooltipOpen(false)}
-        src="https://steamstore-a.akamaihd.net/public/shared/images/ico/icon_questionmark_dark.png"
-        alt="tooltip-image"
-      />
-    </RelativeParentContainer>
+        onMouseLeave={() => setTooltipOpen(false)}
+      >
+        {children}
+      </div>
+    </React.Fragment>
   );
 };
 
 InfoTooltip.propTypes = {
   message: PropTypes.string.isRequired,
   xOff: PropTypes.number,
-  yOff: PropTypes.number
-};
-
-InfoTooltip.defaultProps = {
-  message: '',
-  xOff: 5,
-  yOff: 20
+  yOff: PropTypes.number,
+  children: PropTypes.element,
+  width: PropTypes.string,
+  wrap: PropTypes.oneOf(['true', 'false'])
 };
 
 export default InfoTooltip;
