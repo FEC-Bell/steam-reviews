@@ -25,6 +25,31 @@ export const getPathId = () => {
 };
 
 /**
+ * Given an ISO date string (2020-06-01T00:00:00Z), format into
+ * human readable date (1 Jun, 2020)
+ * @param {String} ISOString
+ * @returns {String}
+ */
+export const getHumanReadableFromISO = (ISOString) => {
+  let months = {
+    '01': 'January',
+    '02': 'February',
+    '03': 'March',
+    '04': 'April',
+    '05': 'May',
+    '06': 'June',
+    '07': 'July',
+    '08': 'August',
+    '09': 'September',
+    '10': 'October',
+    '11': 'November',
+    '12': 'December'
+  };
+
+  return `${parseInt(ISOString.slice(8, 10))} ${months[ISOString.slice(5, 7)]}, ${ISOString.slice(0, 4)}`;
+};
+
+/**
  * Get total, positive, and negative review count, plus semantic rating & % positive, from /api/reviews/:gameid
  * @param {Integer} gameid: int between 1-100, inclusive
  * @returns {Promise->Object}

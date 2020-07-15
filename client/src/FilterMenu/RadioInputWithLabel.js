@@ -10,9 +10,10 @@ const OptionCountSpan = styled.span`
 `;
 
 // Modular radio input (with label) component for filter menu dropdowns
-const RadioInputWithLabel = ({ title, option, checkedOption, count, handleChange, tooltipMessage }) => {
+const RadioInputWithLabel = ({ title = 'Review Type', option = '', checkedOption, count, handleChange = () => {}, tooltipMessage }) => {
   const menuUnitTitle = title.toLowerCase().split(' ').join('_');
   const menuUnitOption = option.toLowerCase().split(' ').join('_');
+
   return (
     <FlexDiv alignItems={'center'} data-testid="input-container">
       <input
@@ -40,7 +41,13 @@ const RadioInputWithLabel = ({ title, option, checkedOption, count, handleChange
             message={tooltipMessage}
             xOff={5}
             yOff={20}
-          /> :
+          >
+            <img
+              style={{ paddingLeft: '5px' }}
+              src="https://steamstore-a.akamaihd.net/public/shared/images/ico/icon_questionmark_dark.png"
+              alt="tooltip-image"
+            />
+          </InfoTooltip> :
           ''
       }
     </FlexDiv>
@@ -54,12 +61,6 @@ RadioInputWithLabel.propTypes = {
   count: PropTypes.number,
   handleChange: PropTypes.func.isRequired,
   tooltipMessage: PropTypes.string
-};
-
-RadioInputWithLabel.defaultProps = {
-  title: 'Review Type',
-  option: '',
-  handleChange: () => {}
 };
 
 export default RadioInputWithLabel;

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { GlobalStyle } from './GlobalStyle';
 import { fetchAllGameReviews, fetchReviewInfo } from '../utils';
 import FilterMenu from './FilterMenu/FilterMenu';
 import FilterInfo from './FilterInfo/FilterInfo';
@@ -204,7 +203,6 @@ const ReviewsModule = ({ gameid }) => {
 
   return (
     <React.Fragment>
-      <GlobalStyle />
       <FilterMenu
         checkedOptions={checkedOptions}
         updateCheckedOption={updateCheckedOption}
