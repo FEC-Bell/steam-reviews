@@ -11,6 +11,11 @@ app.use('/api', router);
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, '..', 'public')));
 
+// Prevent "Cannot /GET /app/:gameid" on relevant frontend requests
+app.get('/app/:gameid', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
+});
+
 router.get('/gamereviews/:gameid', async (req, res) => {
   let { gameid } = req.params;
   if (parseInt(gameid) <= 0 || parseInt(gameid) > 100) {
