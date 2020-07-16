@@ -20,7 +20,18 @@ module.exports = {
     'sourceType': 'module'
   },
   'plugins': [
-    'react'
+    'react',
+    'jest'
+  ],
+  'overrides': [
+    {
+      'files': [
+        '**/*.test.js'
+      ],
+      'env': {
+        jest: true
+      }
+    }
   ],
   'rules': {
   }
