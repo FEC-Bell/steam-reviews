@@ -19,7 +19,7 @@ module.exports = {
   },
   development: {
     client: 'pg',
-    connection: {
+    connection: process.env.PGDB_URI || {
       host: '127.0.0.1',
       user: process.env.PG_USER,
       password: process.env.PG_PASS,

@@ -1,16 +1,27 @@
 module.exports = {
-  extends: 'hackreactor',
-  parser: 'babel-eslint',
-  parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'module',
-    allowImportExportEverywhere: true
+  'env': {
+    'browser': true,
+    'es6': true,
+    'node': true
   },
-  rules: {
-    camelcase: 'off'
+  'extends': [
+    'eslint:recommended',
+    'plugin:react/recommended'
+  ],
+  'globals': {
+    'Atomics': 'readonly',
+    'SharedArrayBuffer': 'readonly'
   },
-  env: {
-    browser: true,
-    node: true
+  'parserOptions': {
+    'ecmaFeatures': {
+      'jsx': true
+    },
+    'ecmaVersion': 2018,
+    'sourceType': 'module'
+  },
+  'plugins': [
+    'react'
+  ],
+  'rules': {
   }
 };
