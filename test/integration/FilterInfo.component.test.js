@@ -1,9 +1,10 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import FilterInfo from '../../client/src/FilterInfo/FilterInfo';
 
 jest.mock('../../client/src/FilterInfo/FilterTags', () => {
+  // eslint-disable-next-line react/display-name
   return () => <div></div>;
 });
 

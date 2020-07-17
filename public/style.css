@@ -13,9 +13,6 @@ html, body {
 body {
   min-width: 320px;
 }
-.emphasis-font {
-  font-family: 'Roboto', sans-serif;
-}
 #reviews {
   width: 940px;
   margin: 0 auto;

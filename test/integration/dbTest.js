@@ -51,7 +51,7 @@ export const dbTest = () => describe('Database query methods', () => {
         id: expect.any(Number),
         title: expect.any(String),
         xp: expect.any(Number),
-        badge_url: expect.stringMatching(/https\:\/\/res\.cloudinary/)
+        badge_url: expect.stringMatching(/https:\/\/res\.cloudinary/)
       });
     }
     done();

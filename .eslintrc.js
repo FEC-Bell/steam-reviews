@@ -26,7 +26,9 @@ module.exports = {
   'overrides': [
     {
       'files': [
-        '**/*.test.js'
+        '**/*.test.js',
+        'dbTest.js',
+        'routesTest.js'
       ],
       'env': {
         jest: true
