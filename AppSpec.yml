@@ -1,36 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: data-gen/
-    destination: ~/steam-reviews/data-gen/
-  - source: client/
-    destination: ~/steam-reviews/client/
-  - source: server/
-    destination: ~/steam-reviews/server/
-  - source: db/
-    destination: ~/steam-reviews/db/
-  - source: public/
-    destination: ~/steam-reviews/public/
-  - source: scripts/
-    destination: ~/steam-reviews/scripts/
-  - source: webpack.config.js
-    destination: ~/steam-reviews/webpack.config.js
-  - source: knexfile.js
-    destination: ~/steam-reviews/knexfile.js
-  - source: package.json
-    destination: ~/steam-reviews/package.json
-  - source: package-lock.json
-    destination: ~/steam-reviews/package-lock.json
-  - source: .babelrc
-    destination: ~/steam-reviews/.babelrc
-  - source: .dockerignore
-    destination: ~/steam-reviews/.dockerignore
-  - source: Dockerfile
-    destination: ~/steam-reviews/Dockerfile
-  - source: docker-compose.yml
-    destination: ~/steam-reviews/docker-compose.yml
-  - source: appspec.yml
-    destination: ~/steam-reviews/appspec.yml
+  - source: ./
+    destination: /home/ec2-user/steam-reviews
 hooks:
   ApplicationStop:
     - location: scripts/kill-service.sh
