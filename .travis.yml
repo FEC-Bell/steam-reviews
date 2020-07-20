@@ -1,13 +1,25 @@
 language: node_js
 node_js:
-  - node
-  - 'lts/*'
+- node
+- lts/*
 services:
-  - postgresql
+- postgresql
 env:
-  - PG_USER=postgres
+- PG_USER=postgres
 cache:
   directories:
-    - node_modules
+  - node_modules
 after_script:
-  - cat ./test/coverage/lcov.info | coveralls
+- cat ./test/coverage/lcov.info | coveralls
+deploy:
+  provider: codedeploy
+  revision_type: github
+  access_key_id: AKIAJILIBXQVLRB5FQIA
+  secret_access_key:
+    secure: pfDXYhQNvCsf4rPB75T76rJp296qsR0kpvw2EJtIdP6EwAQ2FSg49DBxCkvF2PAGUTJozTRcBBmUjdUZ6bzapGpxfjwh6lTnOHJN2enWeCHCuON+tg1dhU0XQqv9h1oEKDV+w5bERh0oN9R8mlURaW/B/eIBa9MhbK6+0IGkVM0KHiLrdMIpDvik/kSqjsf/tyvKGLVymJmDfL/jcfNb8lsYmbYxIRxi/DfjzZ5aIes+joqdZFPalwx8CsYOMJPvMkG6HVXriK3+E8qKq3raxQIdvADJyKzbd8WIePH4Bo3ay0Lk5b6EEYafAPHOv5g4dD86G3KdmUE9lpQSm5XMAfeY5r61pdtjtVUrZdWRtmfFWwxKYcAuA7IpbDARXvSdBQdjbk35cLBcEAau3KjdiFSLQPv4HSa/MkaWRpf/Ep8ZgdIMmBPGhVUZ3v3RT1lgWcVNErpJqzDTekQTiad0WXxBoWR/0EOJ6ve8J+wjVzAmuf6eaACvN4TQQQmbtXBDGR4ZGwa6h3WiNpv9h4PUS8g67QNVneO1RnV6uxrlOUsxNb3PmstpwvwvXOPYb8DnCD7TwLIiYMah59V0mnnMn9CSmmNKJo3WfQbuozHtYhfJfWviPBzkOjwGCcSyBu4Rxw7aswn4c6KzKjILrzX4CSPJD1Uj961N0YnStJ0xtiU=
+  application: steam-reviews
+  deployment_group: steam-app-clone
+  region: us-east-2
+  on:
+    branch: master
+  skip_cleanup: true
