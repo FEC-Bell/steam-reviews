@@ -1,0 +1,10 @@
+version: 0.0
+os: linux
+files:
+  - source: ./
+    destination: /home/ec2-user/steam-reviews
+hooks:
+  ApplicationStop:
+    - location: scripts/kill-service.sh
+  ApplicationStart:
+    - location: scripts/start-service.sh
