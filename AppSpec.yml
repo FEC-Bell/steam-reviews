@@ -1,0 +1,36 @@
+version: 0.0
+os: linux
+files:
+  - source: data-gen/csv-seeds/*
+    destination: ~/steam-reviews/data-gen/csv-seeds/
+  - source: client
+    destination: ~/steam-reviews/client
+  - source: server
+    destination: ~/steam-reviews/server
+  - source: db
+    destination: ~/steam-reviews/db
+  - source: public
+    destination: ~/steam-reviews/public
+  - source: scripts
+    destination: ~/steam-reviews/scripts
+  - source: webpack.config.js
+    destination: ~/steam-reviews/
+  - source: knexfile.js
+    destination: ~/steam-reviews/
+  - source: package.json
+    destination: ~/steam-reviews/
+  - source: package-lock.json
+    destination: ~/steam-reviews/
+  - source: .babelrc
+    destination: ~/steam-reviews/
+  - source: .dockerignore
+    destination: ~/steam-reviews/
+  - source: Dockerfile
+    destination: ~/steam-reviews/
+  - source: docker-compose.yml
+    destination: ~/steam-reviews/
+hooks:
+  ApplicationStop:
+    - location: scripts/kill-service.sh
+  ApplicationStart:
+    - location: scripts/start-service.sh
