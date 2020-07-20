@@ -29,6 +29,8 @@ files:
     destination: ~/steam-reviews/
   - source: docker-compose.yml
     destination: ~/steam-reviews/
+  - source: appspec.yml
+    destination: ~/steam-reviews/
 hooks:
   ApplicationStop:
     - location: scripts/kill-service.sh
