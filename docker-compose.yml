@@ -13,14 +13,14 @@ services:
     networks:
       - reviews-network
     depends_on:
-      - db
+      - reviews_db
     links:
-      - db
-    command: ./wait-for.sh db:5432 -- sh -c "npm run seed && exec node server/index.js"
+      - reviews_db
+    command: ./wait-for.sh reviews_db:5432 -- sh -c "npm run seed && exec node server/index.js"
 
-  db:
+  reviews_db:
     image: postgres:12
-    container_name: db
+    container_name: reviews_db
     restart: on-failure
     volumes:
       - pgdata:/var/lib/postgresql/data/

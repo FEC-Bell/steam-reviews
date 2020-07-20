@@ -1,8 +1,5 @@
 const faker = require('faker');
 
-const REVIEWS_PER_GAME = 10;
-
-
 /**
  * Generates n unique ids between low and high, inclusive,
  * with a preference for unused ids

@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 # Environment variables to pass to node server
 ENV PORT=3001
 ENV NODE_ENV=development
-ENV PGDB_URI=postgresql://postgres:postgres@db:5432/steam_reviews
+ENV PGDB_URI=postgresql://postgres:postgres@reviews_db:5432/steam_reviews
 
 COPY package*.json ./
 RUN npm install
