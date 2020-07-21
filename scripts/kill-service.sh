@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 cd ~/steam-reviews
-docker-compose down
+sudo docker-compose down

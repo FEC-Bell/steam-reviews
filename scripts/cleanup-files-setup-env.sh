@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 cd ~/steam-reviews
-rm -rf ./*
+sudo rm -rf ./*
 cd ..
 sudo service docker start
