@@ -8,32 +8,5 @@ env:
 cache:
   directories:
   - node_modules
-
-deploy:
-- provider: s3
-  access_key_id: $AWS_ROOT_ACCESS_KEY
-  secret_access_key: $AWS_ROOT_SECRET_KEY
-  local_dir: codedeploy_upload
-  skip_cleanup: true
-  on: &2
-    repo: FEC-Bell/steam-reviews
-  bucket: steam-app-clone
-  region: us-east-2
-- provider: codedeploy
-  access_key_id: $AWS_ROOT_ACCESS_KEY
-  secret_access_key: $AWS_ROOT_SECRET_KEY
-  bucket: steam-app-clone
-  key: latest.zip
-  bundle_type: zip
-  application: steam-app-clone
-  deployment_group: deployment-main
-  region: us-east-2
-  on: *2
-
-script:
-  - zip -r latest ./ -x \*.git\* \*.eslintrc\* \*img-processing\* \*node_modules\* \*test\* \*fec-engineering-journal\* \*.env\* \**.log\* \*README.md\* \*jest.config.js\*
-  - mkdir -p codedeploy_upload
-  - mv latest.zip codedeploy_upload/latest.zip
-
 after_script:
 - cat ./test/coverage/lcov.info | coveralls
