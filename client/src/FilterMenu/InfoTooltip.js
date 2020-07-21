@@ -29,10 +29,9 @@ const TooltipDiv = styled.div`
   border-radius: 4px;
   white-space: ${props => props.wrap === 'true' ? 'pre-wrap' : 'nowrap'};
   word-wrap: break-word;
-  font-size: 11.5px;
+  font-size: 10px;
   line-height: 12px;
   display: inline-block;
-  z-index: 300;
   visibility: ${props => props.open ? 'visible' : 'hidden'};
   animation: ${props => props.open ? fadeIn : fadeOut} 0.1s linear;
   transition: visibility 0.1s linear;
@@ -41,6 +40,7 @@ const TooltipDiv = styled.div`
 const RelativeParentContainer = styled.div`
   position: relative;
   font-family: Arial, Helvetica, sans-serif;
+  z-index: 500;
 `;
 
 /**

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FlexDiv } from '../UIUXUtils';
 import DropdownContent from './DropdownContent';
-import FilterMenu from './FilterMenu';
 
 /**
  * STYLED COMPONENTS

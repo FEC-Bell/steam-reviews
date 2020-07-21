@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { EmphasisFont, FlexDiv } from '../UIUXUtils';
 
 // Reviews.js
@@ -162,5 +162,130 @@ export const CommentCount = styled.div`
   :hover {
     background-image: url(https://steamstore-a.akamaihd.net/public/shared/images/comment_quoteicon_bright.png);
     color: #fff;
+  }
+`;
+
+// LoadingReviews.js
+export const LoadingContainer = styled(FlexDiv)`
+  min-height: 1000px;
+  margin: 20px auto 0 auto;
+  text-align: ecnter;
+  font-size: 22px;
+  color: #60acde;
+`;
+
+export const LoadingBarContainer = styled(FlexDiv)`
+  margin: 0 auto 40px auto;
+  width: 62px;
+  height: 62px;
+`;
+
+const BarAnimation = keyframes`
+  0% { transform: scaleX(1) scaleY(0.6); }
+  30% { transform: scaleX(1) scaleY(1); }
+  55% { transform: scaleX(1) scaleY(0.6); }
+  100% { transform: scaleX(1) scaleY(0.6); }
+`;
+
+export const Bar = styled.div`
+  margin-right: 6px;
+  width: 12px;
+  height: 68px;
+  background-color: #67c1f5;
+  animation: ${BarAnimation} 1s ease-in-out infinite;
+  -webkit-animation: ${BarAnimation} 1s ease-in-out infinite;
+  animation-delay: ${props => props.delay || '0s'};
+  -webkit-animation-delay: ${props => props.delay || '0s'};
+`;
+
+// RecentReviews.js
+export const RecentReviewsAside = styled.aside`
+  width: 308px;
+  margin-left: 14px;
+`;
+
+// RecentReview.js
+export const RecentReviewContainer = styled.div`
+  opacity: 0.9;
+  background: -webkit-linear-gradient(left, rgba(34,50,70,1) -1%,rgba(34,50,70,1) 0%,rgba(34,50,70,0) 92%,rgba(34,50,70,0) 100%);
+  background: linear-gradient(to right, rgba(34,50,70,1) -1%,rgba(34,50,70,1) 0%,rgba(34,50,70,0) 92%,rgba(34,50,70,0) 100%);
+  margin-bottom: 18px;
+`;
+
+export const RecentHeaderCtn = styled(FlexDiv)`
+  height: 24px;
+  color: #819db8;
+  background-color: rgba(0, 0, 0, 0.3);
+  margin-bottom: 6px;
+  line-height: 15px;
+  cursor: pointer;
+  :hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+`;
+
+export const RecentRecommendedThumb = styled.img`
+  width: 24px;
+  height: 24px;
+`;
+
+export const RecentUsername = styled.div`
+  max-width: 120px;
+  width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-top: 5px;
+  margin-left: 6px;
+  margin-bottom: -1px;
+  font-size: 12px;
+  ${RecentHeaderCtn}:hover & {
+    color: #66c0f4;
+  }
+`;
+
+export const RecentHours = styled.div`
+  opacity: 0.5;
+  margin-top: 5px;
+  margin-left: 6px;
+  ${RecentHeaderCtn}:hover & {
+    color: #66c0f4;
+  }
+`;
+
+export const RecentPurchaseType = styled.img`
+  margin-right: 5px;
+  margin-top: 4px;
+  opacity: 0.5;
+`;
+
+export const RecentBodyCtn = styled.div`
+  padding-left: 8px;
+`;
+
+export const RecentReviewTextCtn = styled.div`
+  color: #95b4c9;
+  margin-right: 8px;
+  margin-top: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 17px;
+  overflow-wrap: break-word;
+  overflow: hidden;
+`;
+
+export const RecentFooterCtn = styled.div`
+  padding-left: 8px;
+  margin-top: 8px;
+  & span:first-child {
+    display: inline-block;
+    margin-right: 9px;
+    color: #8091a2;
+    font-size: 12px;
+    opacity: 0.6;
+    padding-bottom: 10px;
   }
 `;

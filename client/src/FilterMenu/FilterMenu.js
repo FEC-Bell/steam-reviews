@@ -13,6 +13,7 @@ const StyledMenu = styled.div`
   flex-wrap: wrap;
   justify-content: flex-start;
   position: relative;
+  z-index: 300;
 `;
 
 /**

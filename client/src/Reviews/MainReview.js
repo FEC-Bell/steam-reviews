@@ -29,7 +29,8 @@ const MainReview = ({ review = defaultReview }) => {
       <Review flexDirection='column'>
         <InfoTooltip
           message='See Full Review'
-          width='95px'
+          width='fit-content'
+          wrap='false'
           yOff={5}
           xOff={0}
         >
