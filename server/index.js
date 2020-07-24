@@ -1,5 +1,6 @@
 require('dotenv').config();
 const path = require('path');
+const fetch = require('node-fetch');
 const express = require('express');
 const app = express();
 const router = express.Router();
@@ -58,6 +59,18 @@ router.get('/gamereviews/:gameid', async (req, res) => {
     console.error(e);
     res.status(500).json({ error: 'Error retrieving reviews' });
   }
+});
+
+router.get('/reviewcount/:gameid', (req, res) => {
+  fetch(`http://ec2-54-185-79-51.us-west-2.compute.amazonaws.com:3002/api/reviewcount/${req.params.gameid}`)
+    .then(response => response.json())
+    .then(results => {
+      res.status(200).json(results);
+    })
+    .catch(e => {
+      console.error(e);
+      res.status(500).json({ error: 'Error fetching review counts' });
+    });
 });
 
 const server = app.listen(process.env.PORT || 3001, () => {

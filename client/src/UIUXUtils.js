@@ -5,39 +5,49 @@ import PropTypes from 'prop-types';
 
 // Modular flexbox parent <div> which accepts optional props to change flex behavior, to be used in multiple components
 export const FlexDiv = styled.div`
-  display: ${props => props.display || 'flex'};
-  flex-direction: ${props => props.flexDirection || 'row'};
-  flex-wrap: ${props => props.flexWrap || 'nowrap'};
-  justify-content: ${props => props.justifyContent || 'flex-start'};
-  align-items: ${props => props.alignItems || 'stretch'};
-  align-content: ${props => props.alignContent || 'stretch'};
+  #${props => props.theme.rootId} & {
+    display: ${props => props.display || 'flex'};
+    flex-direction: ${props => props.flexDirection || 'row'};
+    flex-wrap: ${props => props.flexWrap || 'nowrap'};
+    justify-content: ${props => props.justifyContent || 'flex-start'};
+    align-items: ${props => props.alignItems || 'stretch'};
+    align-content: ${props => props.alignContent || 'stretch'};
+  }
 `;
 
 export const BoldText = styled.span`
-  font-weight: ${props => props.weight ? props.weight : 'bold'};
+  #${props => props.theme.rootId} & {
+    font-weight: ${props => props.weight ? props.weight : 'bold'};
+  }
 `;
 
 export const EmphasisFont = styled.span`
-  font-family: 'Roboto', sans-serif;
+  #${props => props.theme.rootId} & {
+    font-family: 'Roboto', sans-serif;
+  }
 `;
 
 export const NoSelect = styled.div`
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  #${props => props.theme.rootId} & {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 `;
 
 // Thumbs up/down icon, used by MainReview and RecentReview
 const ThumbsSVG = styled.svg`
-  fill: #4571a4;
-  stroke: #16202d;
-  stroke-width: 1;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  ${props => props.isNegative ? 'transform: rotate(180deg);' : ''}
+  #${props => props.theme.rootId} & {
+    fill: #4571a4;
+    stroke: #16202d;
+    stroke-width: 1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    ${props => props.isNegative ? 'transform: rotate(180deg);' : ''}
+  }
 `;
 
 export const ThumbsIcon = ({ isNegative }) => {

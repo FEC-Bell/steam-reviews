@@ -7,48 +7,56 @@ import { BoldText, NoSelect } from '../UIUXUtils';
  * STYLED COMPONENTS
  */
 const RangeInput = styled.input`
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  left: 0;
-  -webkit-appearance: none;
-  visibility: hidden;
-  :focus {
-    outline: none;
-  }
-  &::-webkit-slider-thumb, &::-moz-range-thumb, &::-ms-thumb {
+  #${props => props.theme.rootId} & {
+    position: absolute;
     pointer-events: none;
-    border: none;
+    top: 0;
+    left: 0;
     -webkit-appearance: none;
+    visibility: hidden;
+    :focus {
+      outline: none;
+    }
+    &::-webkit-slider-thumb, &::-moz-range-thumb, &::-ms-thumb {
+      pointer-events: none;
+      border: none;
+      -webkit-appearance: none;
+    }
   }
 `;
 
 const SliderContainer = styled(NoSelect)`
-  margin: 10px;
-  height: auto;
-  cursor: pointer;
-  position: relative;
+  #${props => props.theme.rootId} & {
+    margin: 10px;
+    height: auto;
+    cursor: pointer;
+    position: relative;
+  }
 `;
 
 const SliderTrack = styled(NoSelect)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: #fff;
-  height: 4px;
-  margin-top: -2px;
-  z-index: 1;
+  #${props => props.theme.rootId} & {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    height: 4px;
+    margin-top: -2px;
+    z-index: 1;
+  }
 `;
 
 const SliderRange = styled(NoSelect)`
-  position: absolute;
-  top: 0;
-  background: #4582a5;
-  height: 4px;
-  margin-top: -2px;
-  z-index: 2;
-  pointer-events: none;
+  #${props => props.theme.rootId} & {
+    position: absolute;
+    top: 0;
+    background: #4582a5;
+    height: 4px;
+    margin-top: -2px;
+    z-index: 2;
+    pointer-events: none;
+  }
 `;
 
 const SliderThumb = styled(NoSelect).attrs(props => ({
@@ -57,18 +65,20 @@ const SliderThumb = styled(NoSelect).attrs(props => ({
     zIndex: props.isLastDragged ? '4' : '3'
   }
 }))`
-  margin-top: -2px;
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
-  box-shadow: 0px 0px 4px 0px #000000;
-  position: absolute;
-  top: -0.4em;
-  margin-left: -0.6em;
-  cursor: pointer;
-  background: ${props => props.isLastDragged ? '#fdf5ce' : '#f6f6f6'};
-  &:hover {
-    background: #f6f6f6;
+  #${props => props.theme.rootId} & {
+    margin-top: -2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    box-shadow: 0px 0px 4px 0px #000000;
+    position: absolute;
+    top: -0.4em;
+    margin-left: -0.6em;
+    cursor: pointer;
+    background: ${props => props.isLastDragged ? '#fdf5ce' : '#f6f6f6'};
+    &:hover {
+      background: #f6f6f6;
+    }
   }
 `;
 

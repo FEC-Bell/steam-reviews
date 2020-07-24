@@ -41,7 +41,8 @@ const MainReviewFooter = ({ numFoundHelpful = 0, numFoundFunny = 0, numComments 
               numComments > 0 ?
                 <InfoTooltip
                   message='See Full Review'
-                  width='95px'
+                  width='fit-content'
+                  wrap='false'
                   xOff={82}
                   yOff={35}
                 >

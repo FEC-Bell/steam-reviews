@@ -63,17 +63,49 @@ export const fetchAllGameReviews = (gameid) => {
     .then(response => response.json());
 };
 
+const buildQuery = (filters) => {
+  // Review Type: Positive, Negative
+  // Purchase Type: Steam Purchasers, Other
+  // Date Range: TODO - need to coordinate with Damien's graph service
+  // Playtime: { min: Number, max: Number }
+  // Display As: summary, most-helpful, recent, funny
+  let params = new URLSearchParams();
+  for (let key in filters) {
+    if (filters[key] !== null) {
+      if (key === 'Review Type' && ['Positive', 'Negative'].includes(filters[key])) {
+        params.append('review_type', filters[key].toLowerCase());
+      } else if (key === 'Purchase Type' && ['Steam Purchasers', 'Other'].includes(filters[key])) {
+        params.append('purchase_type', filters[key].split(' ')[0].toLowerCase());
+      } else if (key === 'Date Range') {
+        // TODO
+      } else if (key === 'Playtime' && filters[key].min !== undefined && filters[key].max !== undefined) {
+        params.append('play_min', filters[key].min);
+        params.append('play_max', filters[key].max);
+      } else if (key === 'Display As' && ['summary', 'most-helpful', 'recent', 'funny'].includes(filters[key])) {
+        params.append('display', filters[key].split('-').slice(-1)[0]);
+      }
+    }
+  }
+  return params.toString();
+}
+
 /**
  * Get purchase count and reviews data from /api/gamereviews/:gameid
  * @param {Integer} gameid: int between 1-100, inclusive
  * @returns {Promise->Object}
  */
-export const fetchReviewInfo = (gameid) => {
+export const fetchReviewInfo = (gameid, filters) => {
   if (!gameid || gameid > 100 || gameid < 1) {
     throw new Error('Invalid game id');
   }
 
-  return fetch(`/api/gamereviews/${gameid}`)
+  let queryParams = buildQuery(filters);
+  let endpoint = `/api/gamereviews/${gameid}`;
+  if (queryParams) {
+    endpoint += `?${queryParams}`;
+  }
+
+  return fetch(endpoint)
     .then(response => response.json());
 };
 

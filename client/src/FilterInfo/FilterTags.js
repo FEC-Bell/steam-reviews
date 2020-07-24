@@ -4,22 +4,26 @@ import styled from 'styled-components';
 import { FlexDiv, EmphasisFont } from '../UIUXUtils';
 
 const TitleLabel = styled.div`
-  font-size: 15px;
-  color: #c6d4df;
-  padding-bottom: 5px;
-  margin-right: 5px;
+  #${props => props.theme.rootId} & {
+    font-size: 15px;
+    color: #c6d4df;
+    padding-bottom: 5px;
+    margin-right: 5px;
+  }
 `;
 
 const Tag = styled.div`
-  background-color: rgba(255, 255, 255, 0.2);
-  padding: 5px;
-  padding-right: 25px;
-  margin: 0 5px 2.5px 2.5px;
-  border-radius: 2px;
-  cursor: pointer;
-  background-repeat: no-repeat;
-  background-image: url(https://steamstore-a.akamaihd.net/public/images/v6/deleteSearchTerm.png);
-  background-position: right 5px center;
+  #${props => props.theme.rootId} & {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px;
+    padding-right: 25px;
+    margin: 0 5px 2.5px 2.5px;
+    border-radius: 2px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-image: url(https://steamstore-a.akamaihd.net/public/images/v6/deleteSearchTerm.png);
+    background-position: right 5px center;
+  }
 `;
 
 const FilterTags = ({ resetOption, filterOrder, activeFilters }) => {

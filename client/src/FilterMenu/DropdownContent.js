@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import RadioInputWithLabel from './RadioInputWithLabel';
 import DoubleEndedSlider from './DoubleEndedSlider';
@@ -7,98 +8,112 @@ import DoubleEndedSlider from './DoubleEndedSlider';
  * STYLED COMPONENTS
  */
 const CustomizeLanguageButton = styled.a`
-  text-transform: uppercase;
-  color: #67c1f5;
-  font-size: 10px;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 3px 5px;
-  border-radius: 2px;
-  cursor: pointer;
-  :hover {
-    color: #fff;
-    background: #67c1f5;
+  #${props => props.theme.rootId} & {
+    text-transform: uppercase;
+    color: #67c1f5;
+    font-size: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 3px 5px;
+    border-radius: 2px;
+    cursor: pointer;
+    :hover {
+      color: #fff;
+      background: #67c1f5;
+    }
   }
 `;
 
 const DateExplanation = styled.div`
-  white-space: normal;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #4582a5;
-  max-width: 300px;
+  #${props => props.theme.rootId} & {
+    white-space: normal;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #4582a5;
+    max-width: 300px;
+  }
 `;
 
 // Gradient: max browser compatibility
 const ShowGraphButton = styled.button`
-  border-radius: 2px;
-  border: none;
-  padding: 1px 5px;
-  display: inline-block;
-  cursor: pointer;
-  text-decoration: none;
-  color: #a4d7f5;
-  font-size: 12px;
-  line-height: 20px;
-  background: rgba(47, 137, 188, 1);
-  background: -webkit-linear-gradient(
-    to bottom,
-    rgba(47, 137, 188, 1) 5%,
-    rgba(23, 67, 92, 1) 95%
-  );
-  background: linear-gradient(
-    to bottom,
-    rgba(47, 137, 188, 1) 5%,
-    rgba(23, 67, 92, 1) 95%
-  );
-  :hover {
-    color: #fff;
-    background: rgba(102, 192, 244, 1);
+  #${props => props.theme.rootId} & {
+    border-radius: 2px;
+    border: none;
+    padding: 1px 5px;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    color: #a4d7f5;
+    font-size: 12px;
+    line-height: 20px;
+    background: rgba(47, 137, 188, 1);
     background: -webkit-linear-gradient(
       to bottom,
-      rgba(102, 192, 244, 1) 5%,
-      rgba(47, 137, 188, 1) 95%
+      rgba(47, 137, 188, 1) 5%,
+      rgba(23, 67, 92, 1) 95%
     );
     background: linear-gradient(
       to bottom,
-      rgba(102, 192, 244, 1) 5%,
-      rgba(47, 137, 188, 1) 95%
+      rgba(47, 137, 188, 1) 5%,
+      rgba(23, 67, 92, 1) 95%
     );
+    :hover {
+      color: #fff;
+      background: rgba(102, 192, 244, 1);
+      background: -webkit-linear-gradient(
+        to bottom,
+        rgba(102, 192, 244, 1) 5%,
+        rgba(47, 137, 188, 1) 95%
+      );
+      background: linear-gradient(
+        to bottom,
+        rgba(102, 192, 244, 1) 5%,
+        rgba(47, 137, 188, 1) 95%
+      );
+    }
   }
 `;
 
 const SteamLabsDesc = styled.div`
-  cursor: pointer;
-  color: #19c0d0;
-  :hover {
-    color: #fff;
+  #${props => props.theme.rootId} & {
+    cursor: pointer;
+    color: #19c0d0;
+    :hover {
+      color: #fff;
+    }
   }
 `;
 
 const SteamLabsLogo = styled.img`
-  height: 32px;
-  margin-right: 5px;
+  #${props => props.theme.rootId} & {
+    height: 32px;
+    margin-right: 5px;
+  }
 `;
 
 const PlaytimeExplanation = styled.div`
-  width: 300px;
-  white-space: normal;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #4582a5;
+  #${props => props.theme.rootId} & {
+    width: 300px;
+    white-space: normal;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #4582a5;
+  }
 `;
 
 // Since slider is at a higher z-index & therefore exempt from dropdown
 // height calcs, this div is necessary to ensure sufficient spacing below slider
 const ZIndexWrapper = styled.div`
-  height: 45px;
-  box-sizing: border-box;
-  padding-top: 4px;
+  #${props => props.theme.rootId} & {
+    height: 45px;
+    box-sizing: border-box;
+    padding-top: 4px;
+  }
 `;
 
 /**
  * MAIN COMPONENT: Modular dropdown menu
  */
-const DropdownContent = ({ checkedOption, updateCheckedOption, title, options, handleFilterChange }) => {
+const DropdownContent = ({ checkedOption = '', updateCheckedOption = () => {}, title = '', options = [], handleFilterChange = () => {} }) => {
   /**
    * STATIC VARIABLES
    */
@@ -151,7 +166,7 @@ const DropdownContent = ({ checkedOption, updateCheckedOption, title, options, h
               Brought to you by Steam Labs
             </SteamLabsDesc>
             <PlaytimeExplanation>
-              Filter reviews by the user's playtime when the review was written:
+              Filter reviews by the user&apos;s playtime when the review was written:
             </PlaytimeExplanation>
           </React.Fragment> :
           ''
@@ -188,5 +203,13 @@ const DropdownContent = ({ checkedOption, updateCheckedOption, title, options, h
     </React.Fragment>
   );
 };
+
+DropdownContent.propTypes = {
+  checkedOption: PropTypes.string.isRequired,
+  updateCheckedOption: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  options: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
+  handleFilterChange: PropTypes.func.isRequired
+}
 
 export default DropdownContent;

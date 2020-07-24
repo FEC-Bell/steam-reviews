@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 import { fetchAllGameReviews, fetchReviewInfo } from '../utils';
 import FilterMenu from './FilterMenu/FilterMenu';
 import FilterInfo from './FilterInfo/FilterInfo';
 import Reviews from './Reviews/Reviews';
+
+/** STYLED COMPONENTS THEME */
+const theme = {
+  rootId: 'reviews'
+};
 
 /**
  * ROOT COMPONENT
@@ -73,6 +79,7 @@ const ReviewsModule = ({ gameid }) => {
 
   const [mainReviews, setMainReviews] = useState([]);
   const [recentReviews, setRecentReviews] = useState([]);
+  const [isFetchingReviews, setIsFetchingReviews] = useState(true);
 
   const isInitialMount = useRef(true);
 
@@ -108,7 +115,7 @@ const ReviewsModule = ({ gameid }) => {
       .catch(e => console.error(e));
 
     // Fetch to reviews endpoint for other review data
-    fetchReviewInfo(gameid)
+    fetchReviewInfo(gameid, activeFilters)
       .then(result => {
         // Due to different datasets between two services, purchase type total will be different than review
         // type total, despite them being the same on Steam.
@@ -139,10 +146,12 @@ const ReviewsModule = ({ gameid }) => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
-      fetchReviewInfo(gameid)
+      setIsFetchingReviews(true);
+      fetchReviewInfo(gameid, activeFilters)
         .then(result => {
           setMainReviews(result.data);
-          result.recent && setRecentReviews(result.recent);
+          result.recent ? setRecentReviews(result.recent) : setRecentReviews([]);
+          setIsFetchingReviews(false);
         })
         .catch(err => console.error(err));
     }
@@ -158,6 +167,12 @@ const ReviewsModule = ({ gameid }) => {
       ...prevOptions,
       [title]: option
     }));
+    if (title === 'Display As') {
+      setActiveFilters(prevFilters => ({
+        ...prevFilters,
+        [title]: option
+      }));
+    }
   };
 
   /**
@@ -202,7 +217,7 @@ const ReviewsModule = ({ gameid }) => {
   };
 
   return (
-    <React.Fragment>
+    <ThemeProvider theme={theme}>
       <FilterMenu
         checkedOptions={checkedOptions}
         updateCheckedOption={updateCheckedOption}
@@ -221,8 +236,9 @@ const ReviewsModule = ({ gameid }) => {
       <Reviews
         mainReviews={mainReviews}
         recentReviews={recentReviews}
+        isFetching={isFetchingReviews}
       />
-    </React.Fragment>
+    </ThemeProvider>
   );
 };
 
