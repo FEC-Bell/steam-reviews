@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 
@@ -16,31 +16,35 @@ const fadeOut = keyframes`
 `;
 
 const TooltipDiv = styled.div`
-  position: absolute;
-  bottom: ${props => `${props.y}px`};
-  left: ${props =>`${props.x}px`};
-  padding: 5px;
-  box-sizing: border-box;
-  max-width: 300px;
-  width: ${props => props.width};
-  background: #c2c2c2;
-  color: #3d3d3f;
-  box-shadow: 0 0 4px 0 #000;
-  border-radius: 4px;
-  white-space: ${props => props.wrap === 'true' ? 'pre-wrap' : 'nowrap'};
-  word-wrap: break-word;
-  font-size: 10px;
-  line-height: 12px;
-  display: inline-block;
-  visibility: ${props => props.open ? 'visible' : 'hidden'};
-  animation: ${props => props.open ? fadeIn : fadeOut} 0.1s linear;
-  transition: visibility 0.1s linear;
+  #${props => props.theme.rootId} & {
+    position: absolute;
+    bottom: ${props => `${props.y}px`};
+    left: ${props =>`${props.x}px`};
+    padding: 5px;
+    box-sizing: border-box;
+    max-width: 300px;
+    width: ${props => props.width};
+    background: #c2c2c2;
+    color: #3d3d3f;
+    box-shadow: 0 0 4px 0 #000;
+    border-radius: 4px;
+    white-space: ${props => props.wrap === 'true' ? 'pre-wrap' : 'nowrap'};
+    word-wrap: break-word;
+    font-size: 10px;
+    line-height: 12px;
+    display: inline-block;
+    visibility: ${props => props.open ? 'visible' : 'hidden'};
+    animation: ${props => props.open ? fadeIn : fadeOut} 0.1s linear;
+    transition: visibility 0.1s linear;
+  }
 `;
 
 const RelativeParentContainer = styled.div`
-  position: relative;
-  font-family: Arial, Helvetica, sans-serif;
-  z-index: 500;
+  #${props => props.theme.rootId} & {
+    position: relative;
+    font-family: Arial, Helvetica, sans-serif;
+    z-index: 500;
+  }
 `;
 
 /**

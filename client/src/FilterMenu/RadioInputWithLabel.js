@@ -6,7 +6,9 @@ import InfoTooltip from './InfoTooltip';
 import { addCommaToCount } from '../../utils';
 
 const OptionCountSpan = styled.span`
-  color: #7193a6;
+  #${props => props.theme.rootId} & {
+    color: #7193a6;
+  }
 `;
 
 // Modular radio input (with label) component for filter menu dropdowns

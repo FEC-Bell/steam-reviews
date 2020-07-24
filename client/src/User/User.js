@@ -4,27 +4,31 @@ import styled from 'styled-components';
 import { addCommaToCount } from '../../utils';
 
 const UserContainer = styled.div`
-  width: 184px;
-  padding: 8px;
-  opacity: 0.6;
-  display: flex;
-  flex-direction: row;
-  cursor: pointer;
-  :hover {
-    opacity: 1;
+  #${props => props.theme.rootId} & {
+    width: 184px;
+    padding: 8px;
+    opacity: 0.6;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    :hover {
+      opacity: 1;
+    }
   }
 `;
 
 const ImageContainer = styled.div`
-  width: 34px;
-  height: 34px;
-  position: relative;
-  padding: 1px;
-  filter: none;
-  background-color: ${props => props.theme[props.status].plainColor};
-  background: -webkit-linear-gradient(${props => props.theme[props.status].webkit});
-  background: linear-gradient(${props => props.theme[props.status].default});
-  margin-right: 6px;
+  #${props => props.theme.rootId} & {
+    width: 34px;
+    height: 34px;
+    position: relative;
+    padding: 1px;
+    filter: none;
+    background-color: ${props => props.colorTheme[props.status].plainColor};
+    background: -webkit-linear-gradient(${props => props.colorTheme[props.status].webkit});
+    background: linear-gradient(${props => props.colorTheme[props.status].default});
+    margin-right: 6px;
+  }
 `;
 
 ImageContainer.propTypes = {
@@ -33,7 +37,7 @@ ImageContainer.propTypes = {
 
 ImageContainer.defaultProps = {
   status: 'offline',
-  theme: {
+  colorTheme: {
     offline: {
       webkit: 'top, rgba(106,106,106,1) 5%, rgba(85,85,85,1) 95%',
       default: 'to bottom, rgba(106,106,106,1) 5%, rgba(85,85,85,1) 95%',
@@ -53,12 +57,14 @@ ImageContainer.defaultProps = {
 };
 
 const ProfileImg = styled.img`
-  width: 32px;
-  height: 32px;
-  background: -webkit-linear-gradient(${props => props.theme[props.status].webkit});
-  background: linear-gradient(${props => props.theme[props.status].default});
-  padding: 1px;
-  border: none;
+  #${props => props.theme.rootId} & {
+    width: 32px;
+    height: 32px;
+    background: -webkit-linear-gradient(${props => props.colorTheme[props.status].webkit});
+    background: linear-gradient(${props => props.colorTheme[props.status].default});
+    padding: 1px;
+    border: none;
+  }
 `;
 
 ProfileImg.propTypes = {
@@ -67,7 +73,7 @@ ProfileImg.propTypes = {
 
 ProfileImg.defaultProps = {
   status: 'offline',
-  theme: {
+  colorTheme: {
     offline: {
       webkit: 'top, #515151 5%, #474747 95%',
       default: 'to bottom, #515151 5%, #474747 95%'
@@ -84,23 +90,27 @@ ProfileImg.defaultProps = {
 };
 
 const Username = styled.p`
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: 140px;
-  overflow: hidden;
-  margin-top: -2px;
-  margin-bottom: -1px;
-  display: inline-block;
-  font-family: 'Roboto', sans-serif;
-  color: #c1dbf4;
-  font-size: 13px;
-  font-weight: bold;
+  #${props => props.theme.rootId} & {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 140px;
+    overflow: hidden;
+    margin-top: -2px;
+    margin-bottom: -1px;
+    display: inline-block;
+    font-family: 'Roboto', sans-serif;
+    color: #c1dbf4;
+    font-size: 13px;
+    font-weight: bold;
+  }
 `;
 
 const NumStats = styled.p`
-  display: block;
-  :hover {
-    color: #67c1f5;
+  #${props => props.theme.rootId} & {
+    display: block;
+    :hover {
+      color: #67c1f5;
+    }
   }
 `;
 
@@ -153,7 +163,7 @@ User.propTypes = {
   info: PropTypes.shape({
     username: PropTypes.string.isRequired,
     profile_url: (props, propName, componentName) => {
-      if (!/^https?\:\/\/.*\.(?:jpg|png)$/.test(props[propName])) {
+      if (!/^https?:\/\/.*\.(?:jpg|png)$/.test(props[propName])) {
         return new Error(`Invalid prop '${propName}' ('${props[propName]}') supplied to '${componentName}', expected a profile image URL.`);
       }
     },

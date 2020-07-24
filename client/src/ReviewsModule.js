@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 import { fetchAllGameReviews, fetchReviewInfo } from '../utils';
 import FilterMenu from './FilterMenu/FilterMenu';
 import FilterInfo from './FilterInfo/FilterInfo';
 import Reviews from './Reviews/Reviews';
+
+/** STYLED COMPONENTS THEME */
+const theme = {
+  rootId: 'reviews'
+};
 
 /**
  * ROOT COMPONENT
@@ -211,7 +217,7 @@ const ReviewsModule = ({ gameid }) => {
   };
 
   return (
-    <React.Fragment>
+    <ThemeProvider theme={theme}>
       <FilterMenu
         checkedOptions={checkedOptions}
         updateCheckedOption={updateCheckedOption}
@@ -232,7 +238,7 @@ const ReviewsModule = ({ gameid }) => {
         recentReviews={recentReviews}
         isFetching={isFetchingReviews}
       />
-    </React.Fragment>
+    </ThemeProvider>
   );
 };
 

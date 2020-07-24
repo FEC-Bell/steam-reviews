@@ -7,13 +7,15 @@ import FilterMenuUnit from './FilterMenuUnit';
  * STYLED COMPONENTS
  */
 const StyledMenu = styled.div`
-  margin-bottom: 30px;
-  background-color: #1f2f42;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  position: relative;
-  z-index: 300;
+  #${props => props.theme.rootId} & {
+    margin-bottom: 30px;
+    background-color: #1f2f42;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    position: relative;
+    z-index: 300;
+  }
 `;
 
 /**
