@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FlexDiv } from '../UIUXUtils';
@@ -44,6 +44,7 @@ const TitleWithArrow = styled(Title)`
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: right;
+    pointer-events: none;
   }
 `;
 
@@ -67,61 +68,68 @@ const Dropdown = styled.div`
     padding: 10px;
     color: #556772;
     line-height: 20px;
-    visibility: hidden;
+    visibility: ${props => props.visible ? 'visible' : 'hidden'};
     box-sizing: border-box;
-    ${MenuUnit}:hover & {
-      visibility: visible;
-    }
   }
 `;
 
 /**
  * MAIN COMPONENT
  */
-const FilterMenuUnit = ({ checkedOption, updateCheckedOption, title, options, handleFilterChange }) => (
-  <MenuUnit isDisplayAs={title === 'Display As'} data-testid="menu-unit-wrapper">
-    {
-      // If dropdown === Display as, display a title without arrow and a select dropdown
-      title === 'Display As' ?
-        (
-          <FlexDiv alignItems={'center'} flexWrap={'wrap'}>
-            <Title>{title}:</Title>
-            <StyledSelect
-              data-testid="display-as-select"
-              onChange={(e) => updateCheckedOption(title, e.target.value)}
-            >
-              {
-                options.map((option, idx) => (
-                  <option
-                    value={option.toLowerCase().split(' ').join('-')}
-                    key={idx}
-                    data-testid={`option-${idx}`}
-                  >
-                    {option}
-                  </option>)
-                )
-              }
-            </StyledSelect>
-          </FlexDiv>
-        ) :
-        // Else display title with an arrow. Hovering over the title will display the dropdown
-        (
-          <FlexDiv flexWrap='wrap' flexDirection='column'>
-            <TitleWithArrow>{title}</TitleWithArrow>
-            <Dropdown id={`${title.toLowerCase().split(' ').join('-')}-dropdown`}>
-              <DropdownContent
-                title={title}
-                options={options}
-                checkedOption={checkedOption}
-                updateCheckedOption={updateCheckedOption}
-                handleFilterChange={handleFilterChange}
-              />
-            </Dropdown>
-          </FlexDiv>
-        )
-    }
-  </MenuUnit>
-);
+const FilterMenuUnit = ({ checkedOption, updateCheckedOption, title, options, handleFilterChange }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  return (
+    <MenuUnit
+      isDisplayAs={title === 'Display As'} data-testid="menu-unit-wrapper"
+      onMouseEnter={(e) => { e.stopPropagation(); setIsVisible(true); }}
+      onMouseOut={(e) => { e.stopPropagation(); setIsVisible(false); }}
+    >
+      {
+        // If dropdown === Display as, display a title without arrow and a select dropdown
+        title === 'Display As' ?
+          (
+            <FlexDiv alignItems={'center'} flexWrap={'wrap'}>
+              <Title>{title}:</Title>
+              <StyledSelect
+                data-testid="display-as-select"
+                onChange={(e) => updateCheckedOption(title, e.target.value)}
+              >
+                {
+                  options.map((option, idx) => (
+                    <option
+                      value={option.toLowerCase().split(' ').join('-')}
+                      key={idx}
+                      data-testid={`option-${idx}`}
+                    >
+                      {option}
+                    </option>)
+                  )
+                }
+              </StyledSelect>
+            </FlexDiv>
+          ) :
+          // Else display title with an arrow. Hovering over the title will display the dropdown
+          (
+            <FlexDiv flexWrap='wrap' flexDirection='column' pointerEvents='none'>
+              <TitleWithArrow>{title}</TitleWithArrow>
+              <Dropdown
+                id={`${title.toLowerCase().split(' ').join('-')}-dropdown`}
+                visible={isVisible}
+              >
+                <DropdownContent
+                  title={title}
+                  options={options}
+                  checkedOption={checkedOption}
+                  updateCheckedOption={updateCheckedOption}
+                  handleFilterChange={handleFilterChange}
+                />
+              </Dropdown>
+            </FlexDiv>
+          )
+      }
+    </MenuUnit>
+  );
+}
 
 FilterMenuUnit.propTypes = {
   checkedOption: PropTypes.string.isRequired,
