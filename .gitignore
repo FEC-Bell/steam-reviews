@@ -5,6 +5,7 @@ codedeploy_upload/*
 latest.zip
 
 public/bundle.js
+public/*.bundle.js
 
 # Logs
 logs
