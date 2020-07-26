@@ -23,6 +23,9 @@ Cloning the [Steam](https://store.steampowered.com/app/289070/Sid_Meiers_Civiliz
         - [Playtime filter menu](#heavy_check_mark-playtime-filter-menu)
     - [Filter Tags](#filter-tags)
     - [Set up React-Testing-Library, write tests](#set-up-react-testing-library-write-tests)
+9. [Main Reviews Menu](#main-reviews-menu)
+10. [Recent Reviews Menu](#recent-reviews-menu)
+11. [Deployment](#deployment)
 
 ## [PR1](https://github.com/FEC-Bell/steam-reviews/pull/1): Set up developer environment and dependencies
 
@@ -253,3 +256,222 @@ Therefore I'll have to use E2E to actually test the behavior of DoubleEndedSlide
 **:heavy_check_mark: [Video of functionality thus far](https://www.youtube.com/watch?v=aTD4YtIZhLg)**
 
 With this completed, it's safe to make a PR now. I am falling into the antipattern of making big PRs due to the time difference between me and my team members (-14 to -17 hrs). Most of the time my code is blocking to future code, so to make a PR and have to wait 10-12 or often more hours for a response feels really clunky. I will try to avoid this antipattern with my future PRs.
+
+## Main Reviews Menu
+
+The main reviews menu (left reviews column) was mainly straightforward. I designed the UI, then hooked up the state to my filter menu. I'd stubbed out a useEffect hook previously that would fetch a new set of data on an active filter change in the filter menu, so the auto-updating of the menu on filter change was essentially completed before I'd even touched it. Nice job, past me! Final result, looking pretty pixel-perfect:
+
+![Main Reviews Menu](./assets/main-reviews.png)
+
+## Recent Reviews Menu
+
+The recent reviews menu (right revies column, only appears when filter option for Display As is set to 'summary') was completed in much the same way as main reviews. Final result:
+
+![Recent Reviews Menu](./assets/recent-reviews.png)
+
+## Deployment
+
+Deployment - a completely new beast for me. I'd previously only deployed via Heroku, so looks like I'll have to learn everything on the fly.
+
+I decided to deploy with Docker, since containerization seems to be revolutionizing this aspect of the industry, and I thought it would be useful to learn.
+
+After watching a few intro videos and reading through Docker's Getting Started guides, had a better understanding. Docker seems to be super useful, and worth learning.
+
+Setting up Docker by itself seemed simple enough. Steps taken:
+1. Install as CLI tool
+2. Set up Dockerfile in project root dir:
+    ```
+    FROM node:12
+    WORKDIR /usr/src/app
+
+    ENV PORT=3001
+    ENV NODE_ENV=development
+    ENV PGDB_URI=postgresql://postgres:postgres@reviews_db:5432/steam_reviews
+
+    COPY package*.json ./
+    RUN npm install
+    COPY . .
+    EXPOSE 3001
+    RUN npm run build
+    CMD npm start
+    ```
+
+    Pretty handy to pass environment variables to the node process in this fashion. I decided to set NODE_ENV as development to also get needed devDependencies such as babel or webpack. It's unclear whether running a deployment in development mode has any benefits or downsides.
+
+3. Build image via CLI commands:
+    ```
+    docker build -t NAME && docker run -d -p PORT --name NAME IMAGE-NAME
+    ```
+
+However, I had a PostgreSQL database that also needed to run at the same time as Docker. PostgreSQL conveniently has their own set of images on DockerHub which may be used for this purpose, though setting up two containers that were on the same network with Docker alone is a bit cumbersome.
+
+**Solution: docker-compose**. [Final docker-compose.yml file](../docker-compose.yml)
+
+Some problems I encountered & solved while setting up docker-compose:
+1. How to set up username and password which could be passed to service container.
+
+    *Solution*: Allow development mode knex configs in service to accept a URI string instead of individual username and password, and pass the correct PGDB_URI in during container build time.
+
+    ```
+    ENV PGDB_URI=postgresql://postgres:postgres@reviews_db:5432/
+    ```
+
+    The `reviews_db` alias is the one given to my PostgreSQL container, and it may be passed in to env vars dynamically like above.
+
+2. Ensuring service doesn't start before the PostgreSQL container is up and running
+
+    *Solution*: Took a bit of Googling, but a shell script which waits for port availability took care of this bit. The docker-compose command that solved it:
+
+    ```
+    ./scripts/wait-for.sh reviews_db:5432 -- sh -c "npm run seed && exec node server/index.js"
+    ```
+
+    wait-for.sh listens on port 5432 of the network in a loop until it can ping the port. Then, two shell cmds are executed: seed, and start the server. `exec` had to be used in this case, since `npm run seed` was finishing with exit code 0, resulting in the container shutting down before the server could start (might have had to do with my restart option in the .yml being `unless-stopped` instead of `on-failure`).
+
+    `Exec` replaces the current program in the current process, so the node process never exits, just gets replaced by `node/server.js` on seed completion. Very handy, and worth remembering for the future.
+
+After all the docker stuff was successfully implemented and working on my local machine, it was a simple matter of `scp`-ing the needed files into my EC2 instance, then running `docker-compose up --build` remotely via SSH.
+
+Of course, I had to set up my instance, and install the needed software, but that was easy enough:
+
+1. Specify allowed TCP/IP addresses and ports (3001 in my case), along with allowed SSH IP connections
+2. Run these commands via CLI:
+
+    ```
+    chmod 400 yourkeyname.pem
+
+    sudo scp -r -i PEM-KEY MY-FILE-DIR-LIST ec2-user@IP-ADDR:~/steam-reviews/
+
+    sudo ssh -i PEM-KEY ec2-user@IP-ADDR
+
+    sudo yum update
+
+    sudo yum install docker
+
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+    sudo chmod +x /usr/local/bin/docker-compose
+
+    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
+    sudo service docker start
+
+    sudo docker-compose up --build -d
+    ```
+
+    Keep in mind that all commands must be invoked with `sudo` on the EC2 instance server, since the user is logged in as `ec2-user`, which doesn't have root privileges by default.
+
+## Optimizations & Automation
+
+There were a few optimizations I wanted to make after successful deployment:
+
+1. Automate deployment. I initially looked into Continuous Delivery via AWS CodeDeploy, but fell down a rabbit hole that didn't result in any kind of successful result. After going back to the drawing board, I settled on a simple shell script, which I would run whenever I wanted to update my deployed assets. Here, I learned that one can invoke remote commands when connecting via SSH, like so:
+
+    ```
+    ssh -i PEM-KEY ec2-user@IP-ADDR YOUR-COMMAND-HERE
+    ```
+
+    Thus I was able to run all my docker commands remotely. The script was also very fast - probably should have gone with it first, it being the simpler option, instead of jumping down the AWS rabbit hole.
+
+2. Fix CSS errors. I was running my services in webpack production mode to minify the delivered bundles, but that was resulting in some CSS class conflicts between the multiple instances of styled-components. This was fixed by with the concept of [Block Element Modifiers](http://getbem.com/introduction/): prepending a root id tag to all CSS. This was done in styled-components like so:
+
+    Parent component (in my case `ReviewsModule.js`):
+    ```
+    const theme = {
+      rootId: 'reviews'
+    };
+    ...
+    return (
+      <React.Fragment>
+        <ThemeProvider theme={theme}/>
+        <OtherChildComponents/>
+      </React.Fragment>
+    )
+    ```
+
+    Child components:
+    ```
+    const styledDiv = styled.div`
+      #${props => props.theme.rootId} & {
+        /* styles here */
+      }
+    `
+    ```
+
+## Google Page Speeds
+
+### Steam Reviews:
+
+Steam reviews was actually a pretty big module. It had ~870 DOM elements, as seen below. While the number of DOM elements wasn't ideal, the initial page speed was not bad.
+
+Initial speed:
+![Steam Reviews Initial Page Speed](./assets/initial-google-page-speed.png)
+
+Initial bundle size (production minified):
+![Initial Steam Reviews bundle.js size](./assets/initial-prod-bundle-size.png)
+
+Initial bundle size distributions (webpack-bundle-analyzer map):
+![Initial Steam Reviews bundle.js size distributions](./assets/initial-prod-bundle-mapping.png)
+
+Final speed:
+![Final Google Page Speed](./assets/final-google-page-speed.png)
+
+
+
+#### Optimizations made:
+I could immediately see two problems: served bundle size was too big, and vendor packages were making up a large portion of that. To solve these problems, I did the following things:
+
+- Simple code splitting with splitChunksPlugin: separate React and ReactDom into a `vendor.bundle.js` bundle. (Used HtmlWebpackPlugin to dynamically inject the scripts for these two bundles at compile time)
+
+    `webpack.config.js`
+    ```
+    output: {
+      path: path.resolve(__dirname, 'public'),
+      filename: 'bundle.js',
+      chunkFilename: '[name].bundle.js',
+      publicPath: '/'
+    },
+    ...
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+            name: 'vendor',
+            chunks: 'all'
+          }
+        }
+      }
+    }
+    ```
+
+- Compress static files via gzip on server, to reduce file size in network requests. This requires setting the correct headers in my server responses. Final bundle sizes, compressed:
+
+![gzip-compressed-bundle-sizes](./assets/static-bundle-compression-size.png)
+
+991 kB became 166 kB + 167 kB, a marked improvement, and below the recommended max size of 244kB for prod bundles.
+
+#### Other improvements that could be made:
+- Serve images in JPG formats for faster loading
+- Further code splitting
+
+Tabling these improvments for later, if I have time. They're not essential, given the optimized final page speed.
+
+
+### Steam Game Description:
+- TODO
+
+#### Optimizations made:
+- TODO
+
+#### Other improvements that could be made:
+- TODO
+
+### Steam Proxy:
+- TODO
+
+#### Optimizations made:
+- TODO
+
+#### Other improvements that could be made:
+- TODO
