@@ -12,7 +12,6 @@ export const FlexDiv = styled.div`
     justify-content: ${props => props.justifyContent || 'flex-start'};
     align-items: ${props => props.alignItems || 'stretch'};
     align-content: ${props => props.alignContent || 'stretch'};
-    ${props => props.pointerEvents ? 'pointer-events: none;' : ''}
   }
 `;
 

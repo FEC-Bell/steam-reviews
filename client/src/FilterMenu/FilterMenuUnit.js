@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FlexDiv } from '../UIUXUtils';
@@ -20,6 +20,9 @@ const MenuUnit = styled.div`
         `
           :hover {
             background-color: #c6d4df;
+          }
+          :hover ${Dropdown} {
+            visibility: visible;
           }
         `
     )}
@@ -44,7 +47,6 @@ const TitleWithArrow = styled(Title)`
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: right;
-    pointer-events: none;
   }
 `;
 
@@ -68,8 +70,9 @@ const Dropdown = styled.div`
     padding: 10px;
     color: #556772;
     line-height: 20px;
-    visibility: ${props => props.visible ? 'visible' : 'hidden'};
+    visibility: hidden;
     box-sizing: border-box;
+    cursor: pointer;
   }
 `;
 
@@ -77,12 +80,9 @@ const Dropdown = styled.div`
  * MAIN COMPONENT
  */
 const FilterMenuUnit = ({ checkedOption, updateCheckedOption, title, options, handleFilterChange }) => {
-  const [isVisible, setIsVisible] = useState(false);
   return (
     <MenuUnit
       isDisplayAs={title === 'Display As'} data-testid="menu-unit-wrapper"
-      onMouseEnter={(e) => { e.stopPropagation(); setIsVisible(true); }}
-      onMouseOut={(e) => { e.stopPropagation(); setIsVisible(false); }}
     >
       {
         // If dropdown === Display as, display a title without arrow and a select dropdown
@@ -110,12 +110,9 @@ const FilterMenuUnit = ({ checkedOption, updateCheckedOption, title, options, ha
           ) :
           // Else display title with an arrow. Hovering over the title will display the dropdown
           (
-            <FlexDiv flexWrap='wrap' flexDirection='column' pointerEvents='none'>
+            <FlexDiv flexWrap='wrap' flexDirection='column'>
               <TitleWithArrow>{title}</TitleWithArrow>
-              <Dropdown
-                id={`${title.toLowerCase().split(' ').join('-')}-dropdown`}
-                visible={isVisible}
-              >
+              <Dropdown id={`${title.toLowerCase().split(' ').join('-')}-dropdown`}>
                 <DropdownContent
                   title={title}
                   options={options}

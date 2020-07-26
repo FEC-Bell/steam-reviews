@@ -1,26 +1,24 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WebpackCdnPlugin = require('webpack-cdn-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   entry: path.resolve(__dirname, 'client', 'index.js'),
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'bundle.js',
+    chunkFilename: '[name].bundle.js',
     publicPath: '/'
   },
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Steam Reviews',
-      template: path.resolve(__dirname, 'public', 'template.html'),
-      cdnModule: 'react'
+      template: path.resolve(__dirname, 'public', 'template.html')
     }),
-    new WebpackCdnPlugin({
-      modules: {
-        'react': [
-          { name: 'react', var: 'React', path: `umd/${process.env.NODE_ENV === 'production' ? 'react.production.min.js' : 'react.development.js'}` },
-          { name: 'react-dom', var: 'ReactDOM', path: `umd/${process.env.NODE_ENV === 'production' ? 'react-dom.production.min.js' : 'react-dom.development.js'}` }
-        ]
+    new CompressionPlugin({
+      test: /\.(css|js)$/,
+      compressionOptions: {
+        level: 6
       }
     })
   ],
@@ -49,5 +47,16 @@ module.exports = {
         loader: ['style-loader', 'css-loader']
       }
     ],
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          name: 'vendor',
+          chunks: 'all'
+        }
+      }
+    }
   }
 };

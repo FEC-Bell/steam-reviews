@@ -2,6 +2,7 @@ require('dotenv').config();
 const path = require('path');
 const fetch = require('node-fetch');
 const express = require('express');
+const expressStaticGzip = require('express-static-gzip');
 const app = express();
 const router = express.Router();
 
@@ -10,7 +11,7 @@ const { asyncForEach } = require('./asyncForEach');
 
 app.use('/api', router);
 app.use(express.json());
-app.use(express.static(path.resolve(__dirname, '..', 'public')));
+app.use('/', expressStaticGzip(path.resolve(__dirname, '..', 'public')));
 
 // Prevent "Cannot /GET /app/:gameid" on relevant frontend requests
 app.get('/app/:gameid', (req, res) => {
