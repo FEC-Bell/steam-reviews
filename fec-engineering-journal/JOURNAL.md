@@ -266,13 +266,13 @@ With this completed, it's safe to make a PR now. I am falling into the antipatte
 
 The main reviews menu (left reviews column) was mainly straightforward. I designed the UI, then hooked up the state to my filter menu. I'd stubbed out a useEffect hook previously that would fetch a new set of data on an active filter change in the filter menu, so the auto-updating of the menu on filter change was essentially completed before I'd even touched it. Nice job, past me! Final result, looking pretty pixel-perfect:
 
-![Main Reviews Menu](./assets/main-reviews.png)
+![Main Reviews Menu](./assets/main-reviews.PNG)
 
 ## Recent Reviews Menu
 
 The recent reviews menu (right revies column, only appears when filter option for Display As is set to 'summary') was completed in much the same way as main reviews. Final result:
 
-![Recent Reviews Menu](./assets/recent-reviews.png)
+![Recent Reviews Menu](./assets/recent-reviews.PNG)
 
 ## Deployment
 
@@ -410,16 +410,16 @@ There were a few optimizations I wanted to make after successful deployment:
 Steam reviews was actually a pretty big module. It had ~870 DOM elements, as seen below. While the number of DOM elements wasn't ideal, the initial page speed was not bad.
 
 Initial speed:
-![Steam Reviews Initial Page Speed](./assets/initial-google-page-speed.png)
+![Steam Reviews Initial Page Speed](./assets/initial-google-page-speed.PNG)
 
 Initial bundle size (production minified):
-![Initial Steam Reviews bundle.js size](./assets/initial-prod-bundle-size.png)
+![Initial Steam Reviews bundle.js size](./assets/initial-prod-bundle-size.PNG)
 
 Initial bundle size distributions (webpack-bundle-analyzer map):
-![Initial Steam Reviews bundle.js size distributions](./assets/initial-prod-bundle-mapping.png)
+![Initial Steam Reviews bundle.js size distributions](./assets/initial-prod-bundle-mapping.PNG)
 
 Final speed:
-![Final Google Page Speed](./assets/final-google-page-speed.png)
+![Final Google Page Speed](./assets/final-google-page-speed.PNG)
 
 
 
@@ -452,7 +452,7 @@ I could immediately see two problems: served bundle size was too big, and vendor
 
 - Compress static files via gzip on server, to reduce file size in network requests. This requires setting the correct headers in my server responses. Final bundle sizes, compressed:
 
-![gzip-compressed-bundle-sizes](./assets/static-bundle-compression-size.png)
+![gzip-compressed-bundle-sizes](./assets/static-bundle-compression-size.PNG)
 
 991 kB became 166 kB + 167 kB, a marked improvement, and below the recommended max size of 244kB for prod bundles.
 
