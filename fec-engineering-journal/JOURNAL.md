@@ -26,6 +26,11 @@ Cloning the [Steam](https://store.steampowered.com/app/289070/Sid_Meiers_Civiliz
 9. [Main Reviews Menu](#main-reviews-menu)
 10. [Recent Reviews Menu](#recent-reviews-menu)
 11. [Deployment](#deployment)
+12. [Optimizations & Automation](#optimizations-&-automation)
+13. [Google Page Speeds](#google-page-speeds)
+    - [Steam Reviews](#steam-reviews)
+    - [Steam Game Description](#steam-game-description)
+    - [Steam Proxy](#steam-proxy)
 
 ## [PR1](https://github.com/FEC-Bell/steam-reviews/pull/1): Set up developer environment and dependencies
 
