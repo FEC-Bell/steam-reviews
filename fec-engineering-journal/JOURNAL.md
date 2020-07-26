@@ -425,7 +425,7 @@ Final speed:
 
 ![Final Google Page Speed](./assets/final-google-page-speed.PNG)
 
-
+Notably, mobile speed increased from a score of 19 to a score of 45, though my site isn't mobile-friendly yet (and probably won't be, with the short time remaining).
 
 #### Optimizations made:
 I could immediately see two problems: served bundle size was too big, and vendor packages were making up a large portion of that. To solve these problems, I did the following things:
@@ -458,7 +458,7 @@ I could immediately see two problems: served bundle size was too big, and vendor
 
 ![gzip-compressed-bundle-sizes](./assets/static-bundle-compression-size.PNG)
 
-991 kB became 166 kB + 167 kB, a marked improvement for the network file size. The bundles do unpack, however, to be around 300-400kB each.
+991 kB became 166 kB + 167 kB, a marked improvement for the network file size. The bundles do unpack, however, to be around 500kB each.
 
 #### Other improvements that could be made:
 - Serve images in JPG formats for faster loading
