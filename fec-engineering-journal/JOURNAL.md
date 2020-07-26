@@ -407,18 +407,22 @@ There were a few optimizations I wanted to make after successful deployment:
 
 ### Steam Reviews:
 
-Steam reviews was actually a pretty big module. It had ~870 DOM elements, as seen below. While the number of DOM elements wasn't ideal, the initial page speed was not bad.
+Steam reviews was actually a pretty big module. It had ~870 DOM elements, as seen below. While the number of DOM elements wasn't ideal, the initial page speed was not bad. I'm not willing to reduce the number of DOM elements, so I'm going to improve page speed in other ways.
 
 Initial speed:
+
 ![Steam Reviews Initial Page Speed](./assets/initial-google-page-speed.PNG)
 
 Initial bundle size (production minified):
+
 ![Initial Steam Reviews bundle.js size](./assets/initial-prod-bundle-size.PNG)
 
 Initial bundle size distributions (webpack-bundle-analyzer map):
+
 ![Initial Steam Reviews bundle.js size distributions](./assets/initial-prod-bundle-mapping.PNG)
 
 Final speed:
+
 ![Final Google Page Speed](./assets/final-google-page-speed.PNG)
 
 
@@ -454,11 +458,11 @@ I could immediately see two problems: served bundle size was too big, and vendor
 
 ![gzip-compressed-bundle-sizes](./assets/static-bundle-compression-size.PNG)
 
-991 kB became 166 kB + 167 kB, a marked improvement, and below the recommended max size of 244kB for prod bundles.
+991 kB became 166 kB + 167 kB, a marked improvement for the network file size. The bundles do unpack, however, to be around 300-400kB each.
 
 #### Other improvements that could be made:
 - Serve images in JPG formats for faster loading
-- Further code splitting
+- Further code splitting to reduce bundle size to recommended threshold (244kB for prod bundles)
 
 Tabling these improvments for later, if I have time. They're not essential, given the optimized final page speed.
 
