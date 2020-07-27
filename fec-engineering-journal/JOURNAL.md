@@ -425,7 +425,7 @@ Final speed:
 
 ![Final Google Page Speed](./assets/final-google-page-speed.PNG)
 
-Notably, mobile speed increased from a score of 19 to a score of 45, though my site isn't mobile-friendly yet (and probably won't be, with the short time remaining).
+Notably, mobile speed increased from a score of 19 to a score of 65, though my site isn't mobile-friendly yet (and probably won't be, with the short time remaining).
 
 #### Optimizations made:
 I could immediately see two problems: served bundle size was too big, and vendor packages were making up a large portion of that. To solve these problems, I did the following things:
