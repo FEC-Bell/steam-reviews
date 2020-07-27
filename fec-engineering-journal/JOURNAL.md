@@ -460,6 +460,8 @@ I could immediately see two problems: served bundle size was too big, and vendor
 
 991 kB became 166 kB + 167 kB, a marked improvement for the network file size. The bundles do unpack, however, to be around 500kB each.
 
+- Changed style.css to be injected into html at webpack build time, removing the extra network request to get style.css. (style.css is for localized global styling, which doesn't get sent when proxies request this service. styled-components GlobalStyle, which I had before, was being sent with service requests, thus resulting potentially conflicting global styles and unnecessary extra code)
+
 #### Other improvements that could be made:
 - Serve images in JPG formats for faster loading
 - Further code splitting to reduce bundle size to recommended threshold (244kB for prod bundles)
@@ -468,13 +470,30 @@ Tabling these improvments for later, if I have time. They're not essential, give
 
 
 ### Steam Game Description:
-- TODO
+
+Steam Game Description's initial Google Page Speed score was around 93 or so (unfortunately forgot to get a screenshot), but I decided to make the same improvements to it as Steam Reviews, since the minified webpack bundle was still around ~840kB.
+
+Initial prod bundle mapping:
+
+![Game description bundle mapping](./assets/game-desc-bundle-mapping.PNG)
+
+Final page speed (desktop):
+
+![Game description final Google page speed for desktop](./assets/game-desc-final-page-speed.PNG)
+
+Final page speed (mobile - although this wasn't required, the mobile speed ended up being fairly optimized as well):
+
+![Game description final Google page speed for mobile](./assets/game-desc-mobile-page-speed.PNG)
+
+Minified, gzipped bundle sizes:
+
+![Minified bundle sizes](./assets/game-desc-minified-gzip-bundle-sizes.PNG)
 
 #### Optimizations made:
-- TODO
+Same as Steam Reviews' optimizations. Game description was a much smaller module, with an initial bundle size of around 840Kb instead of reviews' ~1Mb (both minified).
 
 #### Other improvements that could be made:
-- TODO
+As seen from the bundle mapping, styled-components is also fairly large even when bundled. It might be worth it to code split some other vendor libraries including styled-components.
 
 ### Steam Proxy:
 - TODO
