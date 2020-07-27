@@ -458,13 +458,14 @@ I could immediately see two problems: served bundle size was too big, and vendor
 
 ![gzip-compressed-bundle-sizes](./assets/static-bundle-compression-size.PNG)
 
-991 kB became 166 kB + 167 kB, a marked improvement for the network file size. The bundles do unpack, however, to be around 500kB each.
+991 kB became 40kB + 30 kB, a marked improvement for the network file size.
 
 - Changed style.css to be injected into html at webpack build time, removing the extra network request to get style.css. (style.css is for localized global styling, which doesn't get sent when proxies request this service. styled-components GlobalStyle, which I had before, was being sent with service requests, thus resulting potentially conflicting global styles and unnecessary extra code)
 
+- Remove inline devtools source mapping for prod mode, shaving off about 50% from the previous minified bundle size.
+
 #### Other improvements that could be made:
 - Serve images in JPG formats for faster loading
-- Further code splitting to reduce bundle size to recommended threshold (244kB for prod bundles)
 
 Tabling these improvments for later, if I have time. They're not essential, given the optimized final page speed.
 
@@ -496,10 +497,33 @@ Same as Steam Reviews' optimizations. Game description was a much smaller module
 As seen from the bundle mapping, styled-components is also fairly large even when bundled. It might be worth it to code split some other vendor libraries including styled-components.
 
 ### Steam Proxy:
-- TODO
+
+There's only so many optimizations I can make to the proxy, since there are multiple services involved that are out of my control.
+
+Initial speed:
+
+![Proxy server initial speed](./assets/steam-proxy-initial-speed.PNG)
+
+Initial bundle mapping:
+
+![Proxy server initial bundle mapping](./assets/steam-proxy-bundle-mapping.PNG)
+
+Speed (as of July 27th, with 2 services offline & most services not optimized):
+
+![Proxy server final speed](./assets/steam-proxy-final-speed.PNG)
 
 #### Optimizations made:
-- TODO
+- Webpack development mode was used previously, partially resulting in that abysmal load speed. I switched to production mode, which required implementing BEM on my styled-component styles in the proxy as well.
+
+- Setting scripts from external sites to 'defer' to allow them to load at their own pace without being blocking.
+
+- Code splitting, same as reviews and game description optimizations (moving React/ReactDOM out into a vendor.bundle.js)
+
+- gzip compression on the server, similar to reviews & game description. Final bundle sizes for proxy styling content are similar to reviews & game desc as well.
+
+- Removing source maps, similar to reviews & game description
 
 #### Other improvements that could be made:
-- TODO
+- Questionable: removing duplicate instances of ReactDOM and React. This is probably not best practice, as the services will not be able to run independently. For my services, perhaps there's a way to conditionally require vendor scripts, only if React or ReactDOM do not exist as accessible variables.
+
+- Uncertain what to do next, due to the reason I mentioned at the start of this proxy section. I will hold off on further optimizations (since there are definitely some things I can do) until all individual services are online (as of July 27th, 2 of 6 services are not reachable) and optimized (as of July 27th, 2 of 6 services have been reported within our team to be optimized).
