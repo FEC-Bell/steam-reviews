@@ -2,15 +2,40 @@
 
 [![Build Status](https://travis-ci.org/FEC-Bell/steam-reviews.svg?branch=master)](https://travis-ci.org/FEC-Bell/steam-reviews) [![Coverage Status](https://coveralls.io/repos/github/FEC-Bell/steam-reviews/badge.svg?branch=master)](https://coveralls.io/github/FEC-Bell/steam-reviews?branch=master)
 
-Reviews service for Team Bell's Steam app clone
+Reviews service for Team Bell's Steam app clone. [Here](https://github.com/FEC-Bell/steam-reviews/blob/master/fec-engineering-journal/JOURNAL.md) is a journal documenting my entire process for creating this service.
+
+## Media
+
+### Steam Reviews
+
+[Link to deployed site](http://ec2-13-59-202-34.us-east-2.compute.amazonaws.com:3001/)
+
+![Steam Reviews GIF Demo](https://media.giphy.com/media/YpxTxyg8giWXhlGMsM/giphy.gif)
+
+### [Steam Game Description](https://github.com/FEC-Bell/steam-game-description):
+
+[Link to deployed site](http://ec2-13-59-202-34.us-east-2.compute.amazonaws.com:3005/)
+
+![Steam Game Description GIF Demo](https://media.giphy.com/media/RlZgP43KhKByiG7nxo/giphy.gif)
+
+*Note that some display images do not work because the target API service has not completely implemented support for them yet.*
+
+### [Steam Proxy](https://github.com/FEC-Bell/christina-proxy):
+
+[Link to deployed site](http://ec2-13-59-202-34.us-east-2.compute.amazonaws.com:3000/)
+
+![Steam Proxy GIF Demo](https://media.giphy.com/media/JpqiSUO3Ctoykg0Vt4/giphy.gif)
 
 ## Related Projects
+
+These are the related Steam services, of which [Game Description](https://github.com/FEC-Bell/steam-game-description) and the [reverse proxy](https://github.com/FEC-Bell/christina-proxy) were also developed by me individually.
 
 - [Reviews Graph](https://github.com/FEC-Bell/steam-reviews-graph)
 - [Downloadable Content](https://github.com/FEC-Bell/downloadable_content)
 - [Photo Carousel](https://github.com/FEC-Bell/photo-carousel)
 - [User Tags](https://github.com/FEC-Bell/steam-user-tags)
 - [Game Description](https://github.com/FEC-Bell/steam-game-description)
+- [Steam Clone - Reverse Proxy](https://github.com/FEC-Bell/christina-proxy)
 
 ## Table of Contents
 

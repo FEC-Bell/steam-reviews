@@ -26,9 +26,6 @@ describe('<FilterInfo /> tests', () => {
     // Positive sentiment
     let sentiment = screen.getByText('Mostly Positive');
     expect(sentiment).toBeInTheDocument();
-    expect(sentiment).toHaveStyle(`
-      color: #66c0f4;
-    `);
 
     // Mixed sentiment
     rerender(<FilterInfo
@@ -40,9 +37,6 @@ describe('<FilterInfo /> tests', () => {
     />);
     sentiment = screen.getByText('Mixed');
     expect(sentiment).toBeInTheDocument();
-    expect(sentiment).toHaveStyle(`
-      color: #b9a06a;
-    `);
 
     // Negative sentiment
     rerender(<FilterInfo
@@ -54,8 +48,5 @@ describe('<FilterInfo /> tests', () => {
     />);
     sentiment = screen.getByText('Overwhelmingly Negative');
     expect(sentiment).toBeInTheDocument();
-    expect(sentiment).toHaveStyle(`
-      color: #a34c25;
-    `);
   });
 });

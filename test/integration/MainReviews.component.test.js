@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import MainReviews from '../../client/src/Reviews/MainReviews';
 import { summaryQueryRes } from '../fixtures/sampleData';
@@ -34,10 +34,6 @@ describe('<MainReviews />, <MainReview />, and <User /> interaction tests', () =
       'src',
       'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_medium.jpg'
     );
-    // Offline color style
-    expect(screen.getByTestId('image-container')).toHaveStyle(`
-      background-color: rgba(0, 0, 0, 0);
-    `);
   });
 
   test('child component <MainReview /> renders correctly when passed invalid props', () => {

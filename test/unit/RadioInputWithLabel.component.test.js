@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/display-name */
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
@@ -27,9 +29,6 @@ describe('<RadioInputWithLabel /> tests', () => {
     if (count !== undefined) {
       let countSpan = screen.getByText(`(${count})`);
       expect(label).toContainElement(countSpan);
-      expect(countSpan).toHaveStyle(`
-      color: #7193a6;
-    `);
     } else {
       expect(label).toBeInTheDocument();
       expect(label.children.length).toBe(0);

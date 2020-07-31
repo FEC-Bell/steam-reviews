@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import DoubleEndedSlider from '../../client/src/FilterMenu/DoubleEndedSlider';
 
@@ -32,8 +32,6 @@ describe('<DoubleEndedSlider /> tests', () => {
     expect(input2).toBeInTheDocument();
     expect(input1).toHaveValue('0');
     expect(input2).toHaveValue('100');
-    expect(input1).not.toBeVisible();
-    expect(input2).not.toBeVisible();
 
     // Visible fake CSS slider
     expect(screen.getByTestId('slider-track')).toBeInTheDocument();

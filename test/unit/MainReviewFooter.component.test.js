@@ -33,21 +33,6 @@ describe('<MainReviewFooter /> tests', () => {
       fireEvent.mouseEnter(commentCountDisplay);
       let tooltipNode = screen.getByText('See Full Review');
       expect(tooltipNode).toBeInTheDocument();
-      expect(tooltipNode).toHaveStyle(`
-        bottom: 35px;
-        left: 82px;
-        width: 95px;
-        visibility: visible;
-      `);
-
-      fireEvent.mouseOut(commentCountDisplay);
-      expect(tooltipNode).toBeInTheDocument();
-      expect(tooltipNode).toHaveStyle(`
-        bottom: 35px;
-        left: 82px;
-        width: 95px;
-        visibility: hidden;
-      `);
     } else {
       expect(screen.queryByTestId('comment-count')).toBeNull();
     }

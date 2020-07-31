@@ -33,23 +33,6 @@ describe('<MainReviewHeader /> tests', () => {
     fireEvent.mouseEnter(purchaseTypeIcon);
     let tooltipNode = screen.getByText(purchaseType === 'direct' ? steamPurchaseMsg : otherPurchaseMsg);
     expect(tooltipNode).toBeInTheDocument();
-    expect(tooltipNode).toHaveStyle(`
-      bottom: -2px;
-      left: 45px;
-      width: fit-content;
-      white-space: nowrap;
-      visibility: visible;
-    `);
-
-    fireEvent.mouseOut(purchaseTypeIcon);
-    expect(tooltipNode).toBeInTheDocument();
-    expect(tooltipNode).toHaveStyle(`
-      bottom: -2px;
-      left: 45px;
-      width: fit-content;
-      white-space: nowrap;
-      visibility: hidden;
-    `);
   };
 
   // Tests

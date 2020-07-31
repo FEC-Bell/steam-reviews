@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
@@ -22,14 +24,9 @@ describe('<FilterMenuUnit /> tests', () => {
       handleFilterChange={() => {}}
     />);
 
-    let menuTitle = screen.getByText('Review Type');
-    expect(menuTitle).toBeInTheDocument();
-    expect(menuTitle).toHaveStyle(`
-      background-image: url(https://steamstore-a.akamaihd.net/public/images/v6/btn_arrow_down_padded.png);
-    `);
+    expect(screen.getByText('Review Type')).toBeInTheDocument();
     // NOTE: hovering over menuTitle does not make hover styles visible.
     // This is beyond Jest/RTL/JsDOM's scope
-    expect(screen.getByText('Review Type - a')).not.toBeVisible();
     expect(screen.getByText('Review Type - a')).toBeInTheDocument();
     expect(screen.getByText('["a","b","c"]')).toBeInTheDocument();
   });
